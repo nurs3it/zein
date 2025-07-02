@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Проверяем, изменился ли package-lock.json
+changed_files="$(git diff-tree -r --name-only --no-commit-id ORIG_HEAD HEAD)"
+
+check_run() {
+  echo "$changed_files" | grep --quiet "$1" && eval "$2"
+}
+
+# Если изменился package-lock.json, устанавливаем зависимости
+check_run "package-lock.json" "echo '📦 package-lock.json changed, running npm install...' && npm install"
+
+echo "✅ Post-merge checks completed!" 

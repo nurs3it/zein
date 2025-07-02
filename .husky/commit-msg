@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "📝 Checking commit message..."
+
+# Проверка сообщения коммита
+npx --no-install commitlint --edit "$1"
+
+echo "✅ Commit message is valid!" 
