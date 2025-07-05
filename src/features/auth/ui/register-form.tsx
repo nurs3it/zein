@@ -10,12 +10,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { UserPlus, Eye, EyeOff } from 'lucide-react';
 import { useRegister } from '../model/auth-hooks';
-import { RegisterCredentials } from '@/shared/types';
+import { RegisterData } from '@/shared/types/api';
 import { useRouter } from 'next/navigation';
 import { useAppSelector } from '@/shared/store/hooks';
 
 const registerSchema = z.object({
-  username: z.string().min(3, 'Имя пользователя должно содержать минимум 3 символа'),
+  name: z.string().min(3, 'Имя должно содержать минимум 3 символа'),
   email: z.string().email('Некорректный email адрес'),
   password: z.string().min(6, 'Пароль должен содержать минимум 6 символов'),
 });
@@ -30,7 +30,7 @@ export const RegisterForm: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterCredentials>({
+  } = useForm<RegisterData>({
     resolver: zodResolver(registerSchema),
   });
 
@@ -41,7 +41,7 @@ export const RegisterForm: React.FC = () => {
     }
   }, [isAuthenticated, router]);
 
-  const onSubmit = async (data: RegisterCredentials) => {
+  const onSubmit = async (data: RegisterData) => {
     await registerMutation.mutateAsync(data);
   };
 
@@ -59,15 +59,15 @@ export const RegisterForm: React.FC = () => {
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="username">Имя пользователя</Label>
+            <Label htmlFor="name">Имя</Label>
             <Input
-              id="username"
+              id="name"
               type="text"
-              placeholder="Введите имя пользователя"
-              {...register('username')}
-              className={errors.username ? 'border-red-500' : ''}
+              placeholder="Введите ваше имя"
+              {...register('name')}
+              className={errors.name ? 'border-red-500' : ''}
             />
-            {errors.username && <p className="text-sm text-red-500">{errors.username.message}</p>}
+            {errors.name && <p className="text-sm text-red-500">{errors.name.message}</p>}
           </div>
 
           <div className="space-y-2">

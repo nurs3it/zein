@@ -17,15 +17,22 @@ interface AppProvidersProps {
 export const AppProviders: React.FC<AppProvidersProps> = ({ children }) => {
   return (
     <ErrorBoundary>
-      <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-        <Provider store={store}>
-          <QueryClientProvider client={queryClient}>
-            {children}
-            <ReactQueryDevtools initialIsOpen={false} />
-            <Toaster richColors position="top-right" />
-          </QueryClientProvider>
-        </Provider>
-      </ThemeProvider>
+      <div suppressHydrationWarning>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Provider store={store}>
+            <QueryClientProvider client={queryClient}>
+              {children}
+              <ReactQueryDevtools initialIsOpen={false} />
+              <Toaster richColors position="top-right" />
+            </QueryClientProvider>
+          </Provider>
+        </ThemeProvider>
+      </div>
     </ErrorBoundary>
   );
 };

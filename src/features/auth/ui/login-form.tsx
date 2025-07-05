@@ -9,10 +9,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { LogIn, Eye, EyeOff } from 'lucide-react';
-import { useLogin } from '../model/auth-hooks';
-import { LoginCredentials } from '@/shared/types';
+import { useLogin, useAuth } from '../model/auth-hooks';
+import { AuthCredentials } from '@/shared/types/api';
 import { useRouter } from 'next/navigation';
-import { useAppSelector } from '@/shared/store/hooks';
 
 const loginSchema = z.object({
   email: z.string().email('Некорректный email адрес'),
@@ -22,14 +21,14 @@ const loginSchema = z.object({
 export const LoginForm: React.FC = () => {
   const [showPassword, setShowPassword] = React.useState(false);
   const router = useRouter();
-  const { isAuthenticated } = useAppSelector(state => state.auth);
+  const { isAuthenticated } = useAuth();
   const loginMutation = useLogin();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginCredentials>({
+  } = useForm<AuthCredentials>({
     resolver: zodResolver(loginSchema),
   });
 
@@ -40,8 +39,15 @@ export const LoginForm: React.FC = () => {
     }
   }, [isAuthenticated, router]);
 
-  const onSubmit = async (data: LoginCredentials) => {
-    await loginMutation.mutateAsync(data);
+  // Редирект после успешного входа
+  React.useEffect(() => {
+    if (loginMutation.isSuccess) {
+      router.push('/platform');
+    }
+  }, [loginMutation.isSuccess, router]);
+
+  const onSubmit = async (data: AuthCredentials) => {
+    loginMutation.mutate(data);
   };
 
   return (

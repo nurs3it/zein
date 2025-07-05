@@ -1,32 +1,28 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import './globals.css';
 import { AppProviders } from './providers/app-providers';
+import { SessionStatus } from '@/shared/ui/components/session-status';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-});
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Zein Project',
-  description: 'Modern web application with FSD architecture',
+  title: 'Zein - ИИ для образования',
+  description: 'Платформа для создания учебных материалов с помощью искусственного интеллекта',
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ru" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <AppProviders>{children}</AppProviders>
+      <body className={inter.className}>
+        <AppProviders>
+          <div className="min-h-screen">
+            <div className="absolute top-4 right-4 z-50 flex items-center gap-4">
+              <SessionStatus showDetails showUserInfo />
+            </div>
+            {children}
+          </div>
+        </AppProviders>
       </body>
     </html>
   );

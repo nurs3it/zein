@@ -1,83 +1,125 @@
 'use client';
 
 import React from 'react';
+import { useAuth } from '@/features/auth/model/auth-hooks';
 import { useRouter } from 'next/navigation';
-import { useAppSelector } from '@/shared/store/hooks';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Lock, ArrowLeft } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { AlertTriangle, Loader2, RefreshCw } from 'lucide-react';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
   fallback?: React.ReactNode;
+  redirectTo?: string;
 }
 
-const DefaultFallback: React.FC = () => {
+// Компонент для отображения когда пользователь не авторизован
+const UnauthorizedFallback: React.FC<{ redirectTo?: string }> = ({ redirectTo = '/sign/in' }) => {
   const router = useRouter();
 
-  const handleGoBack = () => {
-    router.back();
-  };
-
-  const handleGoToLogin = () => {
-    router.push('/sign/in');
-  };
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-4">
-      <Card className="max-w-md w-full shadow-xl">
-        <CardHeader className="text-center pb-4">
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <Card className="w-full max-w-md">
+        <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
-            <div className="p-3 bg-blue-100 dark:bg-blue-900/20 rounded-full">
-              <Lock className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+            <div className="p-3 bg-red-100 dark:bg-red-900/20 rounded-full">
+              <AlertTriangle className="h-6 w-6 text-red-600 dark:text-red-400" />
             </div>
           </div>
-          <CardTitle className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-            Доступ ограничен
-          </CardTitle>
-          <CardDescription className="text-gray-600 dark:text-gray-400">
-            Для доступа к этой странице необходимо войти в систему
-          </CardDescription>
+          <CardTitle>Требуется авторизация</CardTitle>
+          <CardDescription>Для доступа к этой странице необходимо войти в систему</CardDescription>
         </CardHeader>
-
         <CardContent className="space-y-4">
-          <div className="flex flex-col gap-3">
-            <Button onClick={handleGoToLogin} className="w-full">
-              Войти в систему
-            </Button>
-            <Button
-              variant="outline"
-              onClick={handleGoBack}
-              className="w-full flex items-center gap-2"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Назад
-            </Button>
-          </div>
+          <Button onClick={() => router.push(redirectTo)} className="w-full">
+            Войти в систему
+          </Button>
         </CardContent>
       </Card>
     </div>
   );
 };
 
+// Компонент для отображения когда сессия истекла
+const SessionExpiredFallback: React.FC<{ onRefresh: () => void }> = ({ onRefresh }) => {
+  const router = useRouter();
+
+  return (
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <Card className="w-full max-w-md">
+        <CardHeader className="text-center">
+          <div className="flex justify-center mb-4">
+            <div className="p-3 bg-orange-100 dark:bg-orange-900/20 rounded-full">
+              <RefreshCw className="h-6 w-6 text-orange-600 dark:text-orange-400" />
+            </div>
+          </div>
+          <CardTitle>Сессия истекла</CardTitle>
+          <CardDescription>Ваша сессия истекла. Войдите в систему заново.</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Button onClick={onRefresh} variant="outline" className="w-full">
+            <RefreshCw className="h-4 w-4 mr-2" />
+            Обновить
+          </Button>
+          <Button onClick={() => router.push('/sign/in')} className="w-full">
+            Войти заново
+          </Button>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+// Компонент загрузки
+const LoadingFallback: React.FC = () => {
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="flex flex-col items-center space-y-4">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+        <p className="text-sm text-gray-500">Проверка авторизации...</p>
+      </div>
+    </div>
+  );
+};
+
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   children,
-  fallback = <DefaultFallback />,
+  fallback,
+  redirectTo = '/sign/in',
 }) => {
-  const { isAuthenticated, isLoading } = useAppSelector(state => state.auth);
+  const {
+    isAuthenticated,
+    isLoading,
+    hasAccessToken,
+    isTokenValid,
+    isSessionActive,
+    isSessionExpired,
+    isUnauthorized,
+    recheckAuth,
+  } = useAuth();
 
   // Показываем лоадер во время проверки
   if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-      </div>
-    );
+    return <LoadingFallback />;
   }
 
-  // Если не авторизован, показываем fallback
+  // Если нет токена или пользователь неавторизован
+  if (!hasAccessToken || isUnauthorized) {
+    return fallback || <UnauthorizedFallback redirectTo={redirectTo} />;
+  }
+
+  // Если токен невалиден или сессия истекла
+  if (!isTokenValid || isSessionExpired) {
+    return <SessionExpiredFallback onRefresh={recheckAuth} />;
+  }
+
+  // Если сессия неактивна
+  if (!isSessionActive) {
+    return <SessionExpiredFallback onRefresh={recheckAuth} />;
+  }
+
+  // Если все проверки пройдены, но все еще не аутентифицирован
   if (!isAuthenticated) {
-    return <>{fallback}</>;
+    return fallback || <UnauthorizedFallback redirectTo={redirectTo} />;
   }
 
   // Если авторизован, показываем контент
