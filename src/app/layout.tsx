@@ -2,13 +2,22 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { AppProviders } from './providers/app-providers';
-import { SessionStatus } from '@/shared/ui/components/session-status';
+import { DevSessionStatus, ApiDebug } from '@/widgets/dev-tools';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Zein - ИИ для образования',
   description: 'Платформа для создания учебных материалов с помощью искусственного интеллекта',
+  keywords: ['ИИ', 'образование', 'учителя', 'презентации', 'методички'],
+  authors: [{ name: 'Zein Team' }],
+  creator: 'Zein',
+  openGraph: {
+    title: 'Zein - ИИ для образования',
+    description: 'Платформа для создания учебных материалов с помощью искусственного интеллекта',
+    type: 'website',
+    locale: 'ru_RU',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -17,9 +26,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={inter.className}>
         <AppProviders>
           <div className="min-h-screen">
-            <div className="absolute top-4 right-4 z-50 flex items-center gap-4">
-              <SessionStatus showDetails showUserInfo />
-            </div>
+            <DevSessionStatus />
+            <ApiDebug />
             {children}
           </div>
         </AppProviders>

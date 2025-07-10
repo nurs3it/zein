@@ -5,23 +5,14 @@ import axios, {
   InternalAxiosRequestConfig,
 } from 'axios';
 import { getToken, clearTokens } from '@/shared/lib/cookies';
-
-// Базовый URL для API
-const BASE_URL =
-  process.env.NODE_ENV === 'production'
-    ? process.env.NEXT_PUBLIC_API_URL || 'http://185.4.180.4:8002/api'
-    : 'http://185.4.180.4:8002/api';
+import { API_CONFIG } from './api-config';
 
 // Создание экземпляра axios
 const createApiClient = (config?: AxiosRequestConfig): AxiosInstance => {
+  const defaultConfig = API_CONFIG.getAxiosConfig();
+
   const apiClient = axios.create({
-    baseURL: BASE_URL,
-    timeout: 10000,
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-    withCredentials: true, // Для работы с cookies
+    ...defaultConfig,
     ...config,
   });
 
@@ -41,11 +32,21 @@ const createApiClient = (config?: AxiosRequestConfig): AxiosInstance => {
 
       // Логирование запросов в dev режиме
       if (process.env.NODE_ENV === 'development') {
-        console.log(`[API] ${config.method?.toUpperCase()} ${config.url}`, config.data);
+        // eslint-disable-next-line no-console
+        console.log(`[API] ${config.method?.toUpperCase()} ${config.url}`, {
+          baseURL: config.baseURL,
+          headers: Object.fromEntries(
+            Object.entries(config.headers || {}).filter(
+              ([key]) => !key.toLowerCase().includes('authorization') || 'Bearer ***'
+            )
+          ),
+          data: config.data,
+        });
       }
       return config;
     },
     error => {
+      // eslint-disable-next-line no-console
       console.error('[API] Request error:', error);
       return Promise.reject(error);
     }
@@ -56,12 +57,23 @@ const createApiClient = (config?: AxiosRequestConfig): AxiosInstance => {
     (response: AxiosResponse) => {
       // Логирование ответов в dev режиме
       if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
         console.log(`[API] Response ${response.status}:`, response.data);
       }
       return response;
     },
     error => {
-      console.error('[API] Response error:', error);
+      // eslint-disable-next-line no-console
+      console.error('[API] Response error:', {
+        message: error.message,
+        status: error.response?.status,
+        data: error.response?.data,
+        config: {
+          url: error.config?.url,
+          method: error.config?.method,
+          baseURL: error.config?.baseURL,
+        },
+      });
 
       // Обработка ошибок авторизации
       if (error.response?.status === 401) {
@@ -93,10 +105,10 @@ const createApiClient = (config?: AxiosRequestConfig): AxiosInstance => {
   return apiClient;
 };
 
-// Основной API клиент
+// Основной API клиент (теперь работает напрямую)
 export const apiClient = createApiClient();
 
-// Клиент для SSR (без cookies)
+// Клиент для SSR (без credentials)
 export const apiClientSSR = createApiClient({
   withCredentials: false,
 });
@@ -107,14 +119,16 @@ export const createCustomApiClient = (config: AxiosRequestConfig): AxiosInstance
 };
 
 // Экспорт базового URL для использования в других частях приложения
-export { BASE_URL };
+export const BASE_URL = API_CONFIG.getBaseUrl();
 
 // Вспомогательные функции для типизации
 export type ApiClient = typeof apiClient;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ApiResponse<T = any> = AxiosResponse<T>;
 export type ApiError = {
   response?: {
     status: number;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: any;
   };
   message: string;

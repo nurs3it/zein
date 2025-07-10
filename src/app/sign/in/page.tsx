@@ -1,9 +1,10 @@
 import { LoginForm } from '@/features/auth/ui/login-form';
+import { AuthLayout } from '@/shared/ui/layouts/auth-layout';
 
 export default function SignInPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-4">
+    <AuthLayout variant="login">
       <LoginForm />
-    </div>
+    </AuthLayout>
   );
 }

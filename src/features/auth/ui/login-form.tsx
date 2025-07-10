@@ -122,16 +122,6 @@ export const LoginForm: React.FC = () => {
             </button>
           </p>
         </div>
-
-        <div className="mt-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-          <p className="text-xs text-gray-600 dark:text-gray-400 text-center">
-            <strong>Тестовые данные:</strong>
-            <br />
-            Email: user@example.com
-            <br />
-            Пароль: password
-          </p>
-        </div>
       </CardContent>
     </Card>
   );

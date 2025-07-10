@@ -129,14 +129,6 @@ export const RegisterForm: React.FC = () => {
             </button>
           </p>
         </div>
-
-        <div className="mt-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-          <p className="text-xs text-gray-600 dark:text-gray-400 text-center">
-            <strong>Примечание:</strong>
-            <br />
-            Это демо версия. Все данные сохраняются только в сессии браузера.
-          </p>
-        </div>
       </CardContent>
     </Card>
   );

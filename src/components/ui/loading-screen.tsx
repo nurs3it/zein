@@ -11,11 +11,28 @@ interface LoadingScreenProps {
 export const LoadingScreen = ({ message = 'Загрузка...', className = '' }: LoadingScreenProps) => {
   const [currentIcon, setCurrentIcon] = useState(0);
   const [dots, setDots] = useState('');
+  const [particles, setParticles] = useState<
+    Array<{
+      left: number;
+      top: number;
+      delay: number;
+      duration: number;
+    }>
+  >([]);
 
   const icons = [Brain, Sparkles, Zap, BookOpen];
   const IconComponent = icons[currentIcon];
 
   useEffect(() => {
+    // Инициализируем частицы после монтирования компонента
+    const newParticles = Array.from({ length: 20 }, () => ({
+      left: Math.random() * 100,
+      top: Math.random() * 100,
+      delay: Math.random() * 2,
+      duration: 2 + Math.random() * 2,
+    }));
+    setParticles(newParticles);
+
     const iconInterval = setInterval(() => {
       setCurrentIcon(prev => (prev + 1) % icons.length);
     }, 800);
@@ -33,7 +50,7 @@ export const LoadingScreen = ({ message = 'Загрузка...', className = '' 
       clearInterval(iconInterval);
       clearInterval(dotsInterval);
     };
-  }, []);
+  }, [icons.length]);
 
   return (
     <div
@@ -41,15 +58,15 @@ export const LoadingScreen = ({ message = 'Загрузка...', className = '' 
     >
       {/* Animated background particles */}
       <div className="absolute inset-0 overflow-hidden">
-        {Array.from({ length: 20 }).map((_, i) => (
+        {particles.map((particle, i) => (
           <div
             key={i}
             className="absolute w-2 h-2 bg-blue-200 dark:bg-blue-800 rounded-full animate-pulse"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 2}s`,
-              animationDuration: `${2 + Math.random() * 2}s`,
+              left: `${particle.left}%`,
+              top: `${particle.top}%`,
+              animationDelay: `${particle.delay}s`,
+              animationDuration: `${particle.duration}s`,
             }}
           />
         ))}
