@@ -40,7 +40,8 @@ export async function PATCH(
 async function handleRequest(request: NextRequest, params: { path: string[] }, method: string) {
   try {
     const path = params.path.join('/');
-    const url = `${BACKEND_URL}/${path}`;
+    // Добавляем завершающий слеш для всех путей (требует Django)
+    const url = `${BACKEND_URL}/${path}/`;
 
     // Получаем поисковые параметры из оригинального запроса
     const searchParams = request.nextUrl.searchParams;
