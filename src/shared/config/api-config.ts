@@ -1,8 +1,12 @@
-// Конфигурация API - прямые запросы
+// Конфигурация API - умное переключение между прямыми запросами и прокси
 
 export const API_CONFIG = {
-  // Базовый URL для API
-  API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://oneki.kz:8002/api',
+  // В продакшене используем прокси для решения Mixed Content проблем
+  // В dev режиме используем прямые запросы
+  API_URL:
+    process.env.NODE_ENV === 'production'
+      ? '/api/proxy'
+      : process.env.NEXT_PUBLIC_API_URL || 'http://oneki.kz:8002/api',
 
   // Получить базовый URL для API
   getBaseUrl(): string {
@@ -21,14 +25,25 @@ export const API_CONFIG = {
       withCredentials: false,
     };
   },
+
+  // Проверка, используется ли прокси
+  isUsingProxy(): boolean {
+    return process.env.NODE_ENV === 'production';
+  },
+
+  // Получить информацию о режиме работы
+  getMode(): 'direct' | 'proxy' {
+    return this.isUsingProxy() ? 'proxy' : 'direct';
+  },
 };
 
 // Логирование конфигурации для отладки
 if (process.env.NODE_ENV === 'development') {
   // eslint-disable-next-line no-console
-  console.log('[API_CONFIG] Прямые запросы к API:', {
+  console.log('[API_CONFIG] Конфигурация API:', {
     API_URL: API_CONFIG.API_URL,
-    mode: 'direct',
+    mode: API_CONFIG.getMode(),
+    isUsingProxy: API_CONFIG.isUsingProxy(),
     env: {
       NODE_ENV: process.env.NODE_ENV,
       NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,

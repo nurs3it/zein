@@ -86,6 +86,10 @@ export const ApiDebug = () => {
               <ExternalLink className="h-3 w-3 text-gray-500" />
             </div>
             <div>
+              <strong>Режим:</strong> {API_CONFIG.getMode()}
+              {API_CONFIG.isUsingProxy() && <span className="text-green-600">📡 Прокси</span>}
+            </div>
+            <div>
               <strong>Timeout:</strong> 30s
             </div>
           </div>
@@ -124,10 +128,20 @@ export const ApiDebug = () => {
           )}
 
           <div className="text-xs text-gray-500 border-t pt-2">
-            <div>💡 Если есть CORS ошибки:</div>
-            <div>1. Проверьте настройки сервера</div>
-            <div>2. Убедитесь что ngrok запущен</div>
-            <div>3. Обновите URL в переменных окружения</div>
+            <div>💡 Решение проблем:</div>
+            {API_CONFIG.isUsingProxy() ? (
+              <>
+                <div>✅ Прокси активен - Mixed Content решен</div>
+                <div>🔄 Все запросы идут через /api/proxy/</div>
+                <div>📡 HTTPS → Next.js → HTTP Backend</div>
+              </>
+            ) : (
+              <>
+                <div>1. Проверьте настройки сервера</div>
+                <div>2. Убедитесь что бэкенд доступен</div>
+                <div>3. Обновите URL в переменных окружения</div>
+              </>
+            )}
           </div>
         </CardContent>
       </Card>

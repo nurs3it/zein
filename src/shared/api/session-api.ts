@@ -1,10 +1,14 @@
+import { API_CONFIG } from '@/shared/config/api-config';
+
 /**
  * Проверка здоровья бэкенда (без авторизации)
  * Используется только для проверки доступности сервера
  */
 export const checkBackendHealth = async (): Promise<{ status: string }> => {
+  const healthUrl = `${API_CONFIG.getBaseUrl()}/health`;
+
   // Создаем отдельный запрос без токена авторизации
-  const response = await fetch('http://185.4.180.4:8002/api/health/', {
+  const response = await fetch(healthUrl, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
