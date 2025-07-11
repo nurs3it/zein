@@ -30,19 +30,20 @@ const createApiClient = (config?: AxiosRequestConfig): AxiosInstance => {
         }
       }
 
-      // Логирование запросов в dev режиме
-      if (process.env.NODE_ENV === 'development') {
-        // eslint-disable-next-line no-console
-        console.log(`[API] ${config.method?.toUpperCase()} ${config.url}`, {
-          baseURL: config.baseURL,
-          headers: Object.fromEntries(
-            Object.entries(config.headers || {}).filter(
-              ([key]) => !key.toLowerCase().includes('authorization') || 'Bearer ***'
-            )
-          ),
-          data: config.data,
-        });
-      }
+      // Логирование запросов (в продакшене тоже для отладки)
+      // eslint-disable-next-line no-console
+      console.log(`[API] ${config.method?.toUpperCase()} ${config.url}`, {
+        baseURL: config.baseURL,
+        fullUrl: `${config.baseURL}${config.url}`,
+        headers: Object.fromEntries(
+          Object.entries(config.headers || {}).filter(
+            ([key]) => !key.toLowerCase().includes('authorization')
+          )
+        ),
+        hasAuth: !!config.headers?.Authorization,
+        data: config.data,
+        env: process.env.NODE_ENV,
+      });
       return config;
     },
     error => {
@@ -55,11 +56,15 @@ const createApiClient = (config?: AxiosRequestConfig): AxiosInstance => {
   // Response interceptor
   apiClient.interceptors.response.use(
     (response: AxiosResponse) => {
-      // Логирование ответов в dev режиме
-      if (process.env.NODE_ENV === 'development') {
-        // eslint-disable-next-line no-console
-        console.log(`[API] Response ${response.status}:`, response.data);
-      }
+      // Логирование ответов (в продакшене тоже для отладки)
+      // eslint-disable-next-line no-console
+      console.log(`[API] Response ${response.status}:`, {
+        url: response.config.url,
+        method: response.config.method,
+        status: response.status,
+        data: response.data,
+        env: process.env.NODE_ENV,
+      });
       return response;
     },
     error => {
