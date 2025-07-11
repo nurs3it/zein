@@ -47,17 +47,8 @@ async function handleRequest(request: NextRequest, params: { path: string[] }, m
     const searchParams = request.nextUrl.searchParams;
     const finalUrl = searchParams.toString() ? `${url}?${searchParams.toString()}` : url;
 
-    // Подробное логирование входящего запроса
-    console.log(`[PROXY] ===== INCOMING REQUEST =====`);
-    console.log(`[PROXY] Method: ${method}`);
-    console.log(`[PROXY] Path: ${path}`);
-    console.log(`[PROXY] Final URL: ${finalUrl}`);
-    console.log(`[PROXY] Original Request URL: ${request.url}`);
-    console.log(`[PROXY] Request headers:`, {
-      'content-type': request.headers.get('content-type'),
-      authorization: request.headers.get('authorization') ? 'Bearer ***' : 'none',
-      'user-agent': request.headers.get('user-agent'),
-    });
+    // Базовое логирование запросов
+    console.log(`[PROXY] ${method} ${finalUrl}`);
 
     // Подготавливаем заголовки
     const headers: Record<string, string> = {
@@ -69,7 +60,6 @@ async function handleRequest(request: NextRequest, params: { path: string[] }, m
     const authHeader = request.headers.get('authorization');
     if (authHeader) {
       headers['Authorization'] = authHeader;
-      console.log(`[PROXY] Auth header found: Bearer ***`);
     }
 
     // Получаем body для POST/PUT/PATCH запросов
@@ -77,23 +67,13 @@ async function handleRequest(request: NextRequest, params: { path: string[] }, m
     if (['POST', 'PUT', 'PATCH'].includes(method)) {
       try {
         body = await request.text();
-        console.log(`[PROXY] Request body length: ${body?.length || 0}`);
-        console.log(`[PROXY] Request body preview: ${body?.substring(0, 100) || 'empty'}`);
       } catch (error) {
         console.error(`[PROXY] Error reading request body:`, error);
       }
     }
 
-    // Логирование финальных параметров запроса
-    console.log(`[PROXY] ===== SENDING TO BACKEND =====`);
-    console.log(`[PROXY] Backend URL: ${finalUrl}`);
-    console.log(`[PROXY] Method: ${method}`);
-    console.log(`[PROXY] Headers:`, {
-      ...Object.fromEntries(
-        Object.entries(headers).filter(([key]) => !key.toLowerCase().includes('authorization'))
-      ),
-      Authorization: authHeader ? 'Bearer ***' : 'none',
-    });
+    // Логирование отправки запроса
+    console.log(`[PROXY] → ${method} ${finalUrl}`);
 
     // Выполняем запрос к бэкенду
     const response = await fetch(finalUrl, {
@@ -105,15 +85,8 @@ async function handleRequest(request: NextRequest, params: { path: string[] }, m
     // Получаем ответ от бэкенда
     const responseData = await response.text();
 
-    // Подробное логирование ответа
-    console.log(`[PROXY] ===== BACKEND RESPONSE =====`);
-    console.log(`[PROXY] Status: ${response.status} ${response.statusText}`);
-    console.log(`[PROXY] Response OK: ${response.ok}`);
-    console.log(`[PROXY] Response headers:`, {
-      'content-type': response.headers.get('content-type'),
-      'content-length': response.headers.get('content-length'),
-    });
-    console.log(`[PROXY] Response body preview: ${responseData?.substring(0, 200) || 'empty'}`);
+    // Логирование ответа
+    console.log(`[PROXY] ← ${response.status} ${response.statusText}`);
 
     // Возвращаем ответ клиенту
     return new NextResponse(responseData, {
@@ -128,11 +101,7 @@ async function handleRequest(request: NextRequest, params: { path: string[] }, m
       },
     });
   } catch (error) {
-    console.error('[PROXY] ===== ERROR =====');
-    console.error('[PROXY] Error details:', {
-      message: error instanceof Error ? error.message : 'Unknown error',
-      stack: error instanceof Error ? error.stack : undefined,
-    });
+    console.error('[PROXY] Error:', error instanceof Error ? error.message : 'Unknown error');
 
     return NextResponse.json(
       {
