@@ -70,7 +70,7 @@ export const useLogin = () => {
       toast.success('Вход выполнен успешно');
 
       // Инвалидируем кеши для обновления статуса
-      queryClient.invalidateQueries({ queryKey: SESSION_KEYS.tokenValidation });
+      queryClient.invalidateQueries({ queryKey: SESSION_KEYS.sessionValidation });
       queryClient.invalidateQueries({ queryKey: AUTH_KEYS.currentUser });
 
       // Принудительно перезапускаем проверку токенов
@@ -109,7 +109,7 @@ export const useRegister = () => {
       toast.success('Регистрация выполнена успешно');
 
       // Инвалидируем кеши для обновления статуса
-      queryClient.invalidateQueries({ queryKey: SESSION_KEYS.tokenValidation });
+      queryClient.invalidateQueries({ queryKey: SESSION_KEYS.sessionValidation });
       queryClient.invalidateQueries({ queryKey: AUTH_KEYS.currentUser });
 
       // Принудительно перезапускаем проверку токенов
@@ -164,7 +164,7 @@ export const useLogout = () => {
       // Очищаем кеш пользователя
       queryClient.removeQueries({ queryKey: AUTH_KEYS.currentUser });
       // Очищаем кеши сессии
-      queryClient.removeQueries({ queryKey: SESSION_KEYS.tokenValidation });
+      queryClient.removeQueries({ queryKey: SESSION_KEYS.sessionValidation });
       // Очищаем весь кеш (опционально)
       queryClient.clear();
 

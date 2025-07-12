@@ -1,4 +1,5 @@
 import { API_CONFIG } from '@/shared/config/api-config';
+import { apiClient } from '@/shared/config/axios';
 
 /**
  * Проверка здоровья бэкенда (без авторизации)
@@ -21,4 +22,21 @@ export const checkBackendHealth = async (): Promise<{ status: string }> => {
   }
 
   return response.json();
+};
+
+/**
+ * Проверка сессии пользователя
+ * Используется для проверки валидности текущей сессии
+ */
+export const checkSession = async (): Promise<{
+  authenticated: boolean;
+  user?: {
+    id: number;
+    email: string;
+    username: string;
+    name?: string;
+  };
+}> => {
+  const response = await apiClient.get('/users/session/');
+  return response.data;
 };
