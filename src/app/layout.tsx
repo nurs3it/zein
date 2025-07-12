@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { AppProviders } from './providers/app-providers';
-import { DevSessionStatus, ApiDebug } from '@/widgets/dev-tools';
+import { DevSessionStatus } from '@/widgets/dev-tools';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -27,7 +27,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <AppProviders>
           <div className="min-h-screen">
             <DevSessionStatus />
-            <ApiDebug />
             {children}
           </div>
         </AppProviders>

@@ -8,41 +8,52 @@ import {
 } from '@/shared/types/api';
 
 // Функция для извлечения сообщения об ошибке
-const getErrorMessage = (error: any): string => {
-  if (error.response?.data?.message) {
-    return error.response.data.message;
-  }
+const getErrorMessage = (error: unknown): string => {
+  // Проверяем, что error - это объект с полями response
+  if (error && typeof error === 'object' && 'response' in error) {
+    const errorWithResponse = error as { response?: { data?: unknown; status?: number } };
 
-  if (error.response?.data?.detail) {
-    return error.response.data.detail;
-  }
+    if (errorWithResponse.response?.data && typeof errorWithResponse.response.data === 'object') {
+      const data = errorWithResponse.response.data as Record<string, unknown>;
 
-  if (error.response?.data?.error) {
-    return error.response.data.error;
-  }
+      if ('message' in data && typeof data.message === 'string') {
+        return data.message;
+      }
 
-  // Обработка ошибок валидации
-  if (error.response?.data && typeof error.response.data === 'object') {
-    const errors = Object.values(error.response.data).flat();
-    if (errors.length > 0) {
-      return errors[0] as string;
+      if ('detail' in data && typeof data.detail === 'string') {
+        return data.detail;
+      }
+
+      if ('error' in data && typeof data.error === 'string') {
+        return data.error;
+      }
+
+      // Обработка ошибок валидации
+      const errors = Object.values(data).flat();
+      if (errors.length > 0 && typeof errors[0] === 'string') {
+        return errors[0];
+      }
+    }
+
+    if (errorWithResponse.response?.status === 401) {
+      return 'Неверный email или пароль';
+    }
+
+    if (errorWithResponse.response?.status === 400) {
+      return 'Некорректные данные';
+    }
+
+    if (errorWithResponse.response?.status === 500) {
+      return 'Ошибка сервера, попробуйте позже';
     }
   }
 
-  if (error.response?.status === 401) {
-    return 'Неверный email или пароль';
-  }
-
-  if (error.response?.status === 400) {
-    return 'Некорректные данные';
-  }
-
-  if (error.response?.status === 500) {
-    return 'Ошибка сервера, попробуйте позже';
-  }
-
-  if (error.message) {
-    return error.message;
+  // Проверяем, что error - это объект с полем message
+  if (error && typeof error === 'object' && 'message' in error) {
+    const errorWithMessage = error as { message?: unknown };
+    if (typeof errorWithMessage.message === 'string') {
+      return errorWithMessage.message;
+    }
   }
 
   return 'Произошла неизвестная ошибка';
@@ -92,18 +103,11 @@ export const logoutUser = async (): Promise<void> => {
 
 // Получение информации о текущем пользователе
 export const getCurrentUser = async () => {
-  return {
-    id: '1',
-    email: 'test@test.com',
-    username: 'test',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
-  // try {
-  //   const response = await apiClient.get('/users/me/');
-  //   return response.data;
-  // } catch (error) {
-  //   const errorMessage = getErrorMessage(error);
-  //   throw new Error(errorMessage);
-  // }
+  try {
+    const response = await apiClient.get('/users/me/');
+    return response.data;
+  } catch (error) {
+    const errorMessage = getErrorMessage(error);
+    throw new Error(errorMessage);
+  }
 };

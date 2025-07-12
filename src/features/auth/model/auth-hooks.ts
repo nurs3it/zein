@@ -1,3 +1,4 @@
+import React from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { loginUser, registerUser, refreshToken, logoutUser, getCurrentUser } from '../api/auth-api';
 import {
@@ -25,7 +26,7 @@ const adaptApiUser = (apiUser: ApiUser) => ({
   id: apiUser.id.toString(),
   email: apiUser.email,
   username: apiUser.name || apiUser.email,
-  createdAt: apiUser.created_at || new Date().toISOString(),
+  createdAt: apiUser.date_joined,
   updatedAt: new Date().toISOString(),
 });
 
@@ -41,15 +42,25 @@ export const useTokenCheck = () => {
 
 // Хук для получения текущего пользователя
 export const useCurrentUser = () => {
-  const { hasAccessToken, isTokenValid } = useAuthValidation();
+  const { hasAccessToken, isTokenValid, isAuthenticated } = useAuthValidation();
+  const dispatch = useAppDispatch();
 
-  return useQuery({
+  const userQuery = useQuery({
     queryKey: AUTH_KEYS.currentUser,
     queryFn: getCurrentUser,
-    enabled: hasAccessToken && isTokenValid, // Запрос только если есть валидный токен
+    enabled: hasAccessToken && isTokenValid && isAuthenticated, // Запрос только если есть валидный токен и сессия
     staleTime: 5 * 60 * 1000, // 5 минут
     retry: false,
   });
+
+  // Сохраняем данные пользователя в Redux store при успешной загрузке
+  React.useEffect(() => {
+    if (userQuery.data && userQuery.isSuccess) {
+      dispatch(setUser(adaptApiUser(userQuery.data)));
+    }
+  }, [userQuery.data, userQuery.isSuccess, dispatch]);
+
+  return userQuery;
 };
 
 // Хук для авторизации
@@ -82,7 +93,7 @@ export const useLogin = () => {
       const errorMessage = error.message || 'Произошла ошибка при входе';
       dispatch(setError(errorMessage));
       toast.error(errorMessage);
-      console.error('Login error:', error);
+      // console.error('Login error:', error);
     },
     onSettled: () => {
       dispatch(setLoading(false));
@@ -121,7 +132,7 @@ export const useRegister = () => {
       const errorMessage = error.message || 'Произошла ошибка при регистрации';
       dispatch(setError(errorMessage));
       toast.error(errorMessage);
-      console.error('Registration error:', error);
+      // console.error('Registration error:', error);
     },
     onSettled: () => {
       dispatch(setLoading(false));
@@ -138,9 +149,9 @@ export const useRefreshToken = () => {
       setTokens(data.access, data.refresh);
       toast.success('Токен обновлен успешно');
     },
-    onError: (error: Error) => {
-      const errorMessage = error.message || 'Ошибка обновления токена';
-      console.error('Token refresh error:', errorMessage);
+    onError: (_error: Error) => {
+      // const errorMessage = error.message || 'Ошибка обновления токена';
+      // console.error('Token refresh error:', errorMessage);
       toast.error('Необходимо войти заново');
 
       // Очищаем токены при ошибке обновления
@@ -176,7 +187,7 @@ export const useLogout = () => {
     onError: (error: Error) => {
       const errorMessage = error.message || 'Произошла ошибка при выходе';
       toast.error(errorMessage);
-      console.error('Logout error:', error);
+      // console.error('Logout error:', error);
     },
   });
 };
@@ -185,6 +196,14 @@ export const useLogout = () => {
 export const useAuth = () => {
   const authValidation = useAuthValidation();
   const { data: user, isLoading: userLoading } = useCurrentUser();
+  const dispatch = useAppDispatch();
+
+  // Очищаем данные пользователя в Redux store, если пользователь не авторизован
+  React.useEffect(() => {
+    if (!authValidation.isAuthenticated) {
+      dispatch(clearUser());
+    }
+  }, [authValidation.isAuthenticated, dispatch]);
 
   return {
     // Из валидации сессии

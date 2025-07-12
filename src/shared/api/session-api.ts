@@ -33,7 +33,6 @@ export const checkSession = async (): Promise<{
   user?: {
     id: number;
     email: string;
-    username: string;
     name?: string;
   };
 }> => {

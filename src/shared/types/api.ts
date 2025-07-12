@@ -1,5 +1,5 @@
 // Базовые типы для API ответов
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
   data: T;
   message: string;
   success: boolean;
@@ -43,7 +43,6 @@ export interface User {
   id: number;
   email: string;
   name: string;
-  created_at?: string;
-  last_login?: string;
-  is_active?: boolean;
+  date_joined: string;
+  is_active: boolean;
 }
