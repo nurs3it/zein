@@ -4,11 +4,11 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { User, BarChart3, Bell, Settings, Grid3X3, List, Calendar, Clock } from 'lucide-react';
+import { User, Bell, Settings, Grid3X3, List, Clock } from 'lucide-react';
 import { useAuth } from '@/features/auth/model/auth-hooks';
-import { UserInfoSection, AnalyticsSection, NotificationsSection } from './sections';
+import { UserInfoSection, NotificationsSection } from './sections';
 
-type ViewType = 'overview' | 'user-info' | 'analytics' | 'notifications';
+type ViewType = 'overview' | 'user-info' | 'notifications';
 
 export const PlatformDashboard = () => {
   const [currentView, setCurrentView] = useState<ViewType>('overview');
@@ -20,7 +20,6 @@ export const PlatformDashboard = () => {
   const navigationItems = [
     { id: 'overview', label: 'Обзор', icon: Grid3X3 },
     { id: 'user-info', label: 'Профиль', icon: User },
-    { id: 'analytics', label: 'Аналитика', icon: BarChart3 },
     { id: 'notifications', label: 'Уведомления', icon: Bell },
   ];
 
@@ -42,8 +41,6 @@ export const PlatformDashboard = () => {
     switch (currentView) {
       case 'user-info':
         return <UserInfoSection />;
-      case 'analytics':
-        return <AnalyticsSection />;
       case 'notifications':
         return <NotificationsSection />;
       default:
@@ -145,22 +142,10 @@ export const PlatformDashboard = () => {
                   <Button
                     variant="outline"
                     className="w-full justify-start gap-3"
-                    onClick={() => setCurrentView('analytics')}
-                  >
-                    <BarChart3 className="h-4 w-4" />
-                    Посмотреть аналитику
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="w-full justify-start gap-3"
                     onClick={() => setCurrentView('notifications')}
                   >
                     <Bell className="h-4 w-4" />
                     Проверить уведомления
-                  </Button>
-                  <Button variant="outline" className="w-full justify-start gap-3">
-                    <Calendar className="h-4 w-4" />
-                    Календарь событий
                   </Button>
                 </CardContent>
               </Card>
@@ -172,7 +157,6 @@ export const PlatformDashboard = () => {
 
   return (
     <div className="space-y-6">
-      {/* Navigation Tabs */}
       <div className="flex items-center gap-2 bg-white dark:bg-gray-800 p-2 rounded-lg shadow-sm">
         {navigationItems.map(item => {
           const Icon = item.icon;
@@ -196,7 +180,6 @@ export const PlatformDashboard = () => {
         })}
       </div>
 
-      {/* Content */}
       {renderContent()}
     </div>
   );

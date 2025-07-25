@@ -5,30 +5,11 @@ import { useRouter, usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import {
-  Home,
-  BarChart3,
-  Settings,
-  Bell,
-  Users,
-  FileText,
-  Shield,
-  CreditCard,
-  Menu,
-  X,
-  LogOut,
-  User,
-} from 'lucide-react';
+import { Home, Settings, Menu, X, LogOut, User } from 'lucide-react';
 import { useAuth, useLogout } from '@/features/auth/model/auth-hooks';
 
 const navigation = [
   { name: 'Обзор', href: '/platform', icon: Home },
-  { name: 'Аналитика', href: '/platform/analytics', icon: BarChart3 },
-  { name: 'Уведомления', href: '/platform/notifications', icon: Bell },
-  { name: 'Пользователи', href: '/platform/users', icon: Users },
-  { name: 'Документы', href: '/platform/documents', icon: FileText },
-  { name: 'Безопасность', href: '/platform/security', icon: Shield },
-  { name: 'Платежи', href: '/platform/billing', icon: CreditCard },
   { name: 'Настройки', href: '/platform/settings', icon: Settings },
 ];
 
