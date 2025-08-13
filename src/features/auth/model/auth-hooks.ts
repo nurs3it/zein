@@ -133,8 +133,11 @@ export const useRefreshToken = () => {
   return useMutation({
     mutationFn: (tokenData: RefreshTokenRequest) => refreshToken(tokenData),
     onSuccess: data => {
-      // Сохраняем новые токены
-      setTokens(data.access, data.refresh);
+      // Сохраняем только новый access токен, refresh токен остается прежним
+      const currentRefreshToken = getToken('refresh');
+      if (currentRefreshToken) {
+        setTokens(data.access, currentRefreshToken);
+      }
       toast.success('Токен обновлен успешно');
     },
     onError: (_error: Error) => {

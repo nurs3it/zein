@@ -1,5 +1,7 @@
 // Типы для term-plan на основе API схемы
 
+import { ApiUser } from '@/shared/types/api';
+
 export interface TermPlanTask {
   id: number;
   created_at: string;
@@ -22,7 +24,7 @@ export interface ShortTermPlan {
   id: number;
   created_at: string;
   updated_at: string;
-  user: UserDetail;
+  user: ApiUser;
   lesson_topic: string;
   learning_objectives: string[] | null;
   lesson_goal: string;
@@ -109,15 +111,6 @@ export enum LangEnum {
   KK = 'kk',
   RU = 'ru',
   EN = 'en',
-}
-
-// Дополнительные типы для пользователя
-export interface UserDetail {
-  id: number;
-  email: string;
-  name: string;
-  date_joined: string;
-  is_active: boolean;
 }
 
 // Типы для фильтрации и пагинации

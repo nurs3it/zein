@@ -14,11 +14,17 @@ import { RegisterData } from '@/shared/types/api';
 import { useRouter } from 'next/navigation';
 import { useAppSelector } from '@/shared/store/hooks';
 
-const registerSchema = z.object({
-  name: z.string().min(3, 'Имя должно содержать минимум 3 символа'),
-  email: z.string().email('Некорректный email адрес'),
-  password: z.string().min(6, 'Пароль должен содержать минимум 6 символов'),
-});
+const registerSchema = z
+  .object({
+    name: z.string().min(3, 'Имя должно содержать минимум 3 символа'),
+    email: z.string().email('Некорректный email адрес'),
+    password: z.string().min(6, 'Пароль должен содержать минимум 6 символов'),
+    password_confirm: z.string().min(6, 'Подтверждение пароля должно содержать минимум 6 символов'),
+  })
+  .refine(data => data.password === data.password_confirm, {
+    message: 'Пароли не совпадают',
+    path: ['password_confirm'],
+  });
 
 export const RegisterForm: React.FC = () => {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -101,6 +107,29 @@ export const RegisterForm: React.FC = () => {
               </button>
             </div>
             {errors.password && <p className="text-sm text-red-500">{errors.password.message}</p>}
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="password_confirm">Подтверждение пароля</Label>
+            <div className="relative">
+              <Input
+                id="password_confirm"
+                type={showPassword ? 'text' : 'password'}
+                placeholder="Повторите пароль"
+                {...register('password_confirm')}
+                className={errors.password_confirm ? 'border-red-500 pr-10' : 'pr-10'}
+              />
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
+            </div>
+            {errors.password_confirm && (
+              <p className="text-sm text-red-500">{errors.password_confirm.message}</p>
+            )}
           </div>
 
           <Button type="submit" className="w-full" disabled={registerMutation.isPending}>

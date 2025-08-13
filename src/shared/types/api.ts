@@ -13,6 +13,41 @@ export interface ApiError {
   details?: Record<string, unknown>;
 }
 
+// Auth-related types
+export interface AuthCredentials {
+  email: string;
+  password: string;
+}
+
+export interface RegisterData {
+  email: string;
+  password: string;
+  password_confirm: string;
+  name: string;
+}
+
+export interface AuthResponse {
+  access: string;
+  refresh: string;
+  user: ApiUser;
+}
+
+export interface RefreshTokenRequest {
+  refresh: string;
+}
+
+export interface RefreshTokenResponse {
+  access: string;
+}
+
+export interface ApiUser {
+  id: number;
+  email: string;
+  name: string;
+  date_joined: string;
+  is_active: boolean;
+}
+
 // Типы для term-plan на основе API схемы
 
 export interface TermPlanTask {
@@ -37,7 +72,7 @@ export interface ShortTermPlan {
   id: number;
   created_at: string;
   updated_at: string;
-  user: UserDetail;
+  user: ApiUser;
   lesson_topic: string;
   learning_objectives: string[] | null;
   lesson_goal: string;
@@ -124,15 +159,6 @@ export enum LangEnum {
   KK = 'kk',
   RU = 'ru',
   EN = 'en',
-}
-
-// Дополнительные типы для пользователя
-export interface UserDetail {
-  id: number;
-  email: string;
-  name: string;
-  date_joined: string;
-  is_active: boolean;
 }
 
 // Типы для фильтрации и пагинации

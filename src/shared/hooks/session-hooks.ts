@@ -51,8 +51,11 @@ export const useTokenRefresh = () => {
       return response;
     },
     onSuccess: data => {
-      // Сохраняем новые токены
-      setTokens(data.access, data.refresh);
+      // Сохраняем только новый access токен, refresh токен остается прежним
+      const currentRefreshToken = getToken('refresh');
+      if (currentRefreshToken) {
+        setTokens(data.access, currentRefreshToken);
+      }
 
       // Инвалидируем кеши для обновления состояния
       queryClient.invalidateQueries({ queryKey: SESSION_KEYS.sessionValidation });

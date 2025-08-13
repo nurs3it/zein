@@ -7,17 +7,6 @@ export interface AuthState {
   error: string | null;
 }
 
-export interface LoginCredentials {
-  email: string;
-  password: string;
-}
-
-export interface RegisterCredentials {
-  email: string;
-  password: string;
-  name: string;
-}
-
 export interface ApiResponse<T = unknown> {
   success: boolean;
   data?: T;
