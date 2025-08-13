@@ -15,3 +15,4 @@ export { Input } from './input';
 export { Label } from './label';
 export { LoadingScreen } from './loading-screen';
 export { Toaster } from './sonner';
+export { Textarea } from './textarea';

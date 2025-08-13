@@ -1,18 +1,3 @@
-// Общие типы для API
-
-export interface ApiResponse<T> {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: T[];
-}
-
-export interface ApiError {
-  message: string;
-  status: number;
-  details?: Record<string, unknown>;
-}
-
 // Типы для term-plan на основе API схемы
 
 export interface TermPlanTask {

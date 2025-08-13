@@ -13,6 +13,10 @@ export const API_CONFIG = {
     return this.API_URL;
   },
 
+  getMediaUrl(): string {
+    return process.env.NEXT_PUBLIC_MEDIA_URL || 'http://oneki.kz:8002';
+  },
+
   // Настройки для axios
   getAxiosConfig() {
     return {

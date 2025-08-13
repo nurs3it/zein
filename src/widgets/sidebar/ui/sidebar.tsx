@@ -5,11 +5,12 @@ import { useRouter, usePathname } from 'next/navigation';
 import { cn } from '@/shared/lib';
 import { Button } from '@/shared/ui/base/button';
 import { Badge } from '@/shared/ui/base/badge';
-import { Home, Settings, Menu, X, LogOut, User } from 'lucide-react';
+import { Home, Settings, Menu, X, LogOut, User, BookOpen } from 'lucide-react';
 import { useAuth, useLogout } from '@/features/auth/model/auth-hooks';
 
 const navigation = [
   { name: 'Обзор', href: '/platform', icon: Home },
+  { name: 'КМЖ', href: '/platform/kmzh', icon: BookOpen },
   { name: 'Настройки', href: '/platform/settings', icon: Settings },
 ];
 
