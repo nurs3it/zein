@@ -1,8 +1,7 @@
 import React from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { loginUser, registerUser, refreshToken, logoutUser, getCurrentUser } from '../api/auth-api';
-import { AuthCredentials, RegisterData, RefreshTokenRequest } from '@/shared/types/api';
-import { User as ApiUser } from '@/entities/user';
+import { AuthCredentials, RegisterData, RefreshTokenRequest, ApiUser } from '@/shared/types/api';
 import { useAppDispatch } from '@/shared/store';
 import { setUser, clearUser, setError, setLoading } from './auth-slice';
 import { setTokens, clearTokens, getToken } from '@/shared/lib/cookies';

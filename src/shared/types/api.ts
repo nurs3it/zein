@@ -32,10 +32,19 @@ export interface RegisterData {
   name: string;
 }
 
+// API User type (what the server actually returns)
+export interface ApiUser {
+  id: number;
+  email: string;
+  name: string;
+  date_joined: string;
+  is_active: boolean;
+}
+
 export interface AuthResponse {
   access: string;
   refresh: string;
-  user: import('@/entities/user').User;
+  user: ApiUser;
 }
 
 export interface RefreshTokenRequest {
@@ -46,5 +55,3 @@ export interface RefreshTokenResponse {
   access: string;
   refresh: string;
 }
-
-// Удаляем дублирующий интерфейс User, используем из entities
