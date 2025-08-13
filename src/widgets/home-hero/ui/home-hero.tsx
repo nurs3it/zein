@@ -25,7 +25,7 @@ export const HomeHero = () => {
             <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
               Добро пожаловать, <br />
               <span className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
-                {user?.username || 'Коллега'}!
+                {user?.name || 'Коллега'}!
               </span>
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">

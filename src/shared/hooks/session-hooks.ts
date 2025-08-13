@@ -159,13 +159,13 @@ export const useAuthValidation = () => {
     }
 
     return {
-      id: String(payload.user_id || payload.sub || payload.id || ''),
+      id: Number(payload.user_id || payload.sub || payload.id || 0),
       email: String(payload.email || ''),
-      username: String(payload.username || payload.name || payload.email || ''),
-      createdAt: payload.iat
+      name: String(payload.name || payload.email || ''),
+      date_joined: payload.iat
         ? new Date(payload.iat * 1000).toISOString()
         : new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      is_active: true,
     };
   }, []);
 
@@ -180,11 +180,11 @@ export const useAuthValidation = () => {
   // Пользователь из API или из токена
   const user: ApiUser | null = sessionData?.user
     ? {
-        id: String(sessionData.user.id),
+        id: sessionData.user.id,
         email: sessionData.user.email,
-        username: sessionData.user.name || sessionData.user.email,
-        createdAt: new Date().toISOString(), // Fallback since session API doesn't provide this
-        updatedAt: new Date().toISOString(),
+        name: sessionData.user.name || sessionData.user.email,
+        date_joined: new Date().toISOString(), // Fallback since session API doesn't provide this
+        is_active: true,
       }
     : getUserFromToken();
 

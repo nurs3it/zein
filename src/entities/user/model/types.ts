@@ -1,10 +1,10 @@
 export interface User {
-  id: string;
+  id: number;
   email: string;
-  username: string;
+  name: string;
   avatar?: string;
-  createdAt: string;
-  updatedAt: string;
+  date_joined: string;
+  is_active: boolean;
 }
 
 export interface UserProfile extends User {

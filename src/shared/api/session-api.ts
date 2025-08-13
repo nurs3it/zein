@@ -33,7 +33,7 @@ export const checkSession = async (): Promise<{
   user?: {
     id: number;
     email: string;
-    name?: string;
+    name: string;
   };
 }> => {
   const response = await apiClient.get('/users/session/');

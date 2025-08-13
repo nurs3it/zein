@@ -10,7 +10,7 @@ import Link from 'next/link';
 export const PlatformDashboard = () => {
   const { user } = useAuth();
 
-  const userName = user?.username || 'Пользователь';
+  const userName = user?.name || 'Пользователь';
 
   const quickStats = [
     { label: 'Активных проектов', value: '12', trend: '+3' },

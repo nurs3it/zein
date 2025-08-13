@@ -33,7 +33,7 @@ export const Sidebar = ({ className }: SidebarProps) => {
     setIsMobileMenuOpen(false);
   };
 
-  const userName = user?.username || 'Пользователь';
+  const userName = user?.name || 'Пользователь';
 
   return (
     <>

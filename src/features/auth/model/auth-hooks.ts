@@ -1,13 +1,7 @@
 import React from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { loginUser, registerUser, refreshToken, logoutUser, getCurrentUser } from '../api/auth-api';
-import {
-  AuthCredentials,
-  RegisterData,
-  RefreshTokenRequest,
-  RawApiUser,
-  ApiUser,
-} from '@/shared/types/api';
+import { AuthCredentials, RegisterData, RefreshTokenRequest, ApiUser } from '@/shared/types/api';
 import { useAppDispatch } from '@/shared/store';
 import { setUser, clearUser, setError, setLoading } from './auth-slice';
 import { setTokens, clearTokens, getToken } from '@/shared/lib/cookies';
@@ -21,15 +15,6 @@ export const AUTH_KEYS = {
   register: ['auth', 'register'] as const,
   refresh: ['auth', 'refresh'] as const,
 } as const;
-
-// Адаптер для приведения API пользователя к локальному формату
-const adaptApiUser = (apiUser: RawApiUser) => ({
-  id: apiUser.id.toString(),
-  email: apiUser.email,
-  username: apiUser.name || apiUser.email,
-  createdAt: apiUser.date_joined,
-  updatedAt: new Date().toISOString(),
-});
 
 // Хук для проверки наличия токена
 export const useTokenCheck = () => {
@@ -57,7 +42,7 @@ export const useCurrentUser = () => {
   // Сохраняем данные пользователя в Redux store при успешной загрузке
   React.useEffect(() => {
     if (userQuery.data && userQuery.isSuccess) {
-      dispatch(setUser(adaptApiUser(userQuery.data)));
+      dispatch(setUser(userQuery.data));
     }
   }, [userQuery.data, userQuery.isSuccess, dispatch]);
 
@@ -77,6 +62,8 @@ export const useLogin = () => {
     onSuccess: data => {
       // Сохраняем токены в cookies
       setTokens(data.access, data.refresh);
+      // Сохраняем данные пользователя в Redux store
+      dispatch(setUser(data.user));
       // Сохраняем данные пользователя в кеше
       queryClient.setQueryData(AUTH_KEYS.currentUser, data.user);
       toast.success('Вход выполнен успешно');
@@ -117,7 +104,7 @@ export const useRegister = () => {
       setTokens(data.access, data.refresh);
       // Сохраняем данные пользователя в кеше
       queryClient.setQueryData(AUTH_KEYS.currentUser, data.user);
-      dispatch(setUser(adaptApiUser(data.user)));
+      dispatch(setUser(data.user));
       toast.success('Регистрация выполнена успешно');
 
       // Инвалидируем кеши для обновления статуса

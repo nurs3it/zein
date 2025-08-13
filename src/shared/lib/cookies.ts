@@ -64,7 +64,7 @@ interface JWTPayload {
   iat: number; // время создания (Unix timestamp)
   user_id?: string | number;
   email?: string;
-  username?: string;
+  name?: string;
   [key: string]: unknown;
 }
 

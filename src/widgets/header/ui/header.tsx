@@ -61,7 +61,7 @@ export const Header = () => {
                         <User className="h-4 w-4 text-white" />
                       </div>
                       <span className="text-sm font-medium text-gray-900 dark:text-white">
-                        {user?.username || user?.email}
+                        {user?.name || user?.email}
                       </span>
                       <ChevronDown className="h-4 w-4 text-gray-500" />
                     </Button>
@@ -70,7 +70,7 @@ export const Header = () => {
                     <DropdownMenuLabel>
                       <div className="flex flex-col space-y-1">
                         <p className="text-sm font-medium leading-none">
-                          {user?.username || 'Пользователь'}
+                          {user?.name || 'Пользователь'}
                         </p>
                         <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
                       </div>

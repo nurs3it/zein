@@ -9,7 +9,7 @@ import { useAuth } from '@/features/auth/model/auth-hooks';
 export const UserInfoSection = () => {
   const { user } = useAuth();
 
-  const userName = user?.username || 'Пользователь';
+  const userName = user?.name || 'Пользователь';
   const userEmail = user && 'email' in user && user.email ? user.email : 'email@example.com';
 
   const accessRights = [

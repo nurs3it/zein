@@ -15,7 +15,7 @@ export interface LoginCredentials {
 export interface RegisterCredentials {
   email: string;
   password: string;
-  username: string;
+  name: string;
 }
 
 export interface ApiResponse<T = unknown> {
