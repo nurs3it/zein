@@ -1,4 +1,5 @@
-import { apiClient, ApiResponse } from '@/shared/config/axios';
+import { apiClient } from '@/shared/config/axios';
+import { ApiResponse } from '@/shared/types/api';
 import { Notification } from '../model/types';
 
 export const notificationApi = {

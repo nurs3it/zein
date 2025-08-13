@@ -7,4 +7,3 @@ export { HomeFeatures } from './home-features';
 export { HomeTargetAudience } from './home-target-audience';
 export { HomeCTA } from './home-cta';
 export { HomeFooter } from './home-footer';
-export { DevTools } from './dev-tools';

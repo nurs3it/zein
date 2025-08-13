@@ -35,7 +35,7 @@ export interface RegisterData {
 export interface AuthResponse {
   access: string;
   refresh: string;
-  user: User;
+  user: import('@/entities/user').User;
 }
 
 export interface RefreshTokenRequest {
@@ -47,11 +47,4 @@ export interface RefreshTokenResponse {
   refresh: string;
 }
 
-// Типы пользователя
-export interface User {
-  id: number;
-  email: string;
-  name: string;
-  date_joined: string;
-  is_active: boolean;
-}
+// Удаляем дублирующий интерфейс User, используем из entities

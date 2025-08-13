@@ -198,3 +198,13 @@ export const clearTokens = () => {
   clientCookies.remove(COOKIE_KEYS.ACCESS_TOKEN, '/');
   clientCookies.remove(COOKIE_KEYS.REFRESH_TOKEN, '/');
 };
+
+// Функция для установки токена в cookies (alias для setTokens)
+export const setTokenInCookies = (accessToken: string, refreshToken: string) => {
+  setTokens(accessToken, refreshToken);
+};
+
+// Функция для удаления токенов из cookies (alias для clearTokens)
+export const removeTokenFromCookies = () => {
+  clearTokens();
+};

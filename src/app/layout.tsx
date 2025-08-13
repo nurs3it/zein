@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { AppProviders } from './providers/app-providers';
-import { DevSessionStatus } from '@/widgets/dev-tools';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -25,10 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="ru" suppressHydrationWarning>
       <body className={inter.className}>
         <AppProviders>
-          <div className="min-h-screen">
-            <DevSessionStatus />
-            {children}
-          </div>
+          <div className="min-h-screen">{children}</div>
         </AppProviders>
       </body>
     </html>
