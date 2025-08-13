@@ -1,5 +1,5 @@
 // Re-export User type from entities
-export type { User } from '@/entities/user';
+export type { User } from '@/entities/user/model/types';
 
 export interface AuthState {
   user: User | null;
