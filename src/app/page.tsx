@@ -1,10 +1,5 @@
-import { AuthWrapper } from '@/shared/ui/components/auth-wrapper';
-import { Header } from '@/widgets/header';
-import { HomeHero } from '@/widgets/home-hero';
-import { HomeFeatures } from '@/widgets/home-features';
-import { HomeTargetAudience } from '@/widgets/home-target-audience';
-import { HomeCTA } from '@/widgets/home-cta';
-import { HomeFooter } from '@/widgets/home-footer';
+import { AuthWrapper } from '@/shared/ui';
+import { Header, HomeHero, HomeFeatures, HomeTargetAudience, HomeCTA, HomeFooter } from '@/widgets';
 
 // Клиентский компонент с аутентификацией
 const AuthenticatedHomePage = () => {

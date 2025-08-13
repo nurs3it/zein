@@ -1,11 +1,5 @@
-export interface User {
-  id: string;
-  email: string;
-  username: string;
-  avatar?: string;
-  createdAt: string;
-  updatedAt: string;
-}
+// Re-export User type from entities
+export type { User } from '@/entities/user';
 
 export interface AuthState {
   user: User | null;

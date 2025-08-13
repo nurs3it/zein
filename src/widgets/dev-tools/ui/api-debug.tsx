@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/base/card';
+import { Button } from '@/shared/ui/base/button';
+import { Badge } from '@/shared/ui/base/badge';
 import { API_CONFIG } from '@/shared/config/api-config';
 import { apiClient } from '@/shared/config/axios';
 import { Activity, AlertCircle, CheckCircle, Settings, ExternalLink } from 'lucide-react';

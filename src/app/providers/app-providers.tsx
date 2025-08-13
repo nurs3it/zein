@@ -4,7 +4,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { Toaster } from '@/components/ui/sonner';
+import { Toaster } from '@/shared/ui/base/sonner';
 import { ThemeProvider } from 'next-themes';
 import { store } from '@/shared/store';
 import { queryClient } from '@/shared/config/query-client';

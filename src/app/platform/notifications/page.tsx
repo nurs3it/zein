@@ -1,4 +1,4 @@
-import { NotificationsSection } from '@/widgets/platform-dashboard/ui/sections/notifications-section';
+import { NotificationsSection } from '@/features/notifications';
 
 export default function NotificationPage() {
   return <NotificationsSection />;

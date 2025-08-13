@@ -1,14 +1,23 @@
 // Базовые типы для API ответов
 export interface ApiResponse<T = unknown> {
-  data: T;
-  message: string;
-  success: boolean;
+  count: number;
+  next: string | null;
+  page_info: {
+    current_page: number;
+    total_pages: number;
+    page_size: number;
+    has_next: boolean;
+    has_previous: boolean;
+  };
+  previous: string | null;
+  results: T[];
 }
 
 export interface ApiError {
   message: string;
   field?: string;
   code?: string;
+  detail?: string;
 }
 
 // Типы для аутентификации

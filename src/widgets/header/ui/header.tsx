@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/shared/ui/base/button';
 import { Brain, User, Settings, LogOut, ChevronDown } from 'lucide-react';
 import {
   DropdownMenu,
@@ -11,7 +11,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from '@/shared/ui/base/dropdown-menu';
 import { useAuth } from '@/features/auth/model/auth-hooks';
 import { useLogout } from '@/features/auth/model/auth-hooks';
 

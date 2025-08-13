@@ -1,8 +1,8 @@
 'use client';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/base/card';
+import { Badge } from '@/shared/ui/base/badge';
+import { Button } from '@/shared/ui/base/button';
 import { User, Shield, Crown, Calendar, Globe, Settings, Edit } from 'lucide-react';
 import { useAuth } from '@/features/auth/model/auth-hooks';
 

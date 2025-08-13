@@ -7,7 +7,7 @@ import {
   RefreshTokenRequest,
   User as ApiUser,
 } from '@/shared/types/api';
-import { useAppDispatch } from '@/shared/store/hooks';
+import { useAppDispatch } from '@/shared/store';
 import { setUser, clearUser, setError, setLoading } from './auth-slice';
 import { setTokens, clearTokens, getToken } from '@/shared/lib/cookies';
 import { toast } from 'sonner';

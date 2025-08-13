@@ -1,5 +1,5 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/base/card';
+import { Button } from '@/shared/ui/base/button';
 import { LucideIcon } from 'lucide-react';
 
 interface PlatformCardProps {

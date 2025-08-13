@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { Button } from '@/shared/ui/base/button';
 import { Bell, Grid3X3, User } from 'lucide-react';
 import Link from 'next/link';
 

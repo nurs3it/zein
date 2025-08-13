@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { cn } from '@/shared/lib';
+import { Button } from '@/shared/ui/base/button';
+import { Badge } from '@/shared/ui/base/badge';
 import { Home, Settings, Menu, X, LogOut, User } from 'lucide-react';
 import { useAuth, useLogout } from '@/features/auth/model/auth-hooks';
 

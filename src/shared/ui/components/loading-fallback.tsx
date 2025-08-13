@@ -1,4 +1,4 @@
-import { LoadingScreen } from '@/components/ui/loading-screen';
+import { LoadingScreen } from '@/shared/ui/base/loading-screen';
 
 interface LoadingFallbackProps {
   message?: string;

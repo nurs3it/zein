@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuth } from '@/features/auth/model/auth-hooks';
-import { LoadingScreen } from '@/components/ui/loading-screen';
+import { LoadingScreen } from '@/shared/ui/base/loading-screen';
 import { useEffect, useState } from 'react';
 import { getTokenInfoFromCookies } from '@/shared/lib/cookies';
 

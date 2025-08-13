@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/shared/ui/base/button';
 import { ArrowRight } from 'lucide-react';
 import { useAuth } from '@/features/auth/model/auth-hooks';
 

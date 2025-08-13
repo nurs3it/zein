@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { ErrorBoundary as ReactErrorBoundary } from 'react-error-boundary';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/shared/ui/base/button';
 import {
   Card,
   CardContent,
@@ -10,8 +10,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+} from '@/shared/ui/base/card';
+import { Badge } from '@/shared/ui/base/badge';
 import { AlertTriangle, RefreshCw, Home, ChevronDown, ChevronUp } from 'lucide-react';
 import { AppError, ErrorInfo } from '@/shared/types';
 

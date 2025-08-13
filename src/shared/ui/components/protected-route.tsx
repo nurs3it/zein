@@ -3,8 +3,8 @@
 import React from 'react';
 import { useAuth } from '@/features/auth/model/auth-hooks';
 import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/shared/ui/base/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/base/card';
 import { AlertTriangle, Loader2, RefreshCw } from 'lucide-react';
 
 interface ProtectedRouteProps {
