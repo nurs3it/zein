@@ -10,8 +10,7 @@ import Link from 'next/link';
 export const PlatformDashboard = () => {
   const { user } = useAuth();
 
-  const userName =
-    user && 'name' in user && user.name ? user.name : user?.username || 'Пользователь';
+  const userName = user?.username || 'Пользователь';
 
   const quickStats = [
     { label: 'Активных проектов', value: '12', trend: '+3' },
@@ -33,7 +32,7 @@ export const PlatformDashboard = () => {
         <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl p-6 text-white">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold mb-2">Добро пожаловать, {userName}!</h1>
+              <h1 className="text-2xl font-bold mb-2">Добро пожаловать, {userName || ''}!</h1>
               <p className="text-blue-100 mb-4">
                 Вот краткий обзор вашей активности и последних обновлений
               </p>

@@ -9,8 +9,7 @@ import { useAuth } from '@/features/auth/model/auth-hooks';
 export const UserInfoSection = () => {
   const { user } = useAuth();
 
-  const userName =
-    user && 'name' in user && user.name ? user.name : user?.username || 'Пользователь';
+  const userName = user?.username || 'Пользователь';
   const userEmail = user && 'email' in user && user.email ? user.email : 'email@example.com';
 
   const accessRights = [
@@ -39,7 +38,7 @@ export const UserInfoSection = () => {
             <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <User className="h-10 w-10 text-white" />
             </div>
-            <CardTitle className="text-xl">{userName}</CardTitle>
+            <CardTitle className="text-xl">{userName || ''}</CardTitle>
             <CardDescription className="text-sm">{userEmail}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">

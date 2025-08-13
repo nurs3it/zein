@@ -1,7 +1,13 @@
 import React from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { loginUser, registerUser, refreshToken, logoutUser, getCurrentUser } from '../api/auth-api';
-import { AuthCredentials, RegisterData, RefreshTokenRequest, ApiUser } from '@/shared/types/api';
+import {
+  AuthCredentials,
+  RegisterData,
+  RefreshTokenRequest,
+  RawApiUser,
+  ApiUser,
+} from '@/shared/types/api';
 import { useAppDispatch } from '@/shared/store';
 import { setUser, clearUser, setError, setLoading } from './auth-slice';
 import { setTokens, clearTokens, getToken } from '@/shared/lib/cookies';
@@ -17,7 +23,7 @@ export const AUTH_KEYS = {
 } as const;
 
 // Адаптер для приведения API пользователя к локальному формату
-const adaptApiUser = (apiUser: ApiUser) => ({
+const adaptApiUser = (apiUser: RawApiUser) => ({
   id: apiUser.id.toString(),
   email: apiUser.email,
   username: apiUser.name || apiUser.email,
@@ -213,7 +219,7 @@ export const useAuth = () => {
     canRefresh: authValidation.canRefresh,
 
     // Данные пользователя (приоритет currentUser, fallback - token)
-    user: user || authValidation.user,
+    user: (user || authValidation.user) as ApiUser | null,
     tokenInfo: authValidation.tokenInfo,
     refreshTokenInfo: authValidation.refreshTokenInfo,
     lastActivity: authValidation.lastActivity,

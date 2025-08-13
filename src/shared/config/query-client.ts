@@ -6,9 +6,12 @@ export const queryClient = new QueryClient({
       staleTime: 1000 * 60 * 5, // 5 минут
       gcTime: 1000 * 60 * 10, // 10 минут
       refetchOnWindowFocus: false,
-      retry: (failureCount, error: any) => {
+      retry: (failureCount, error: { status?: number } | Error) => {
         // Не повторяем запросы для 4xx ошибок
-        if (error?.status >= 400 && error?.status < 500) {
+        if (error instanceof Error) {
+          return false;
+        }
+        if (error?.status && error.status >= 400 && error.status < 500) {
           return false;
         }
         return failureCount < 3;

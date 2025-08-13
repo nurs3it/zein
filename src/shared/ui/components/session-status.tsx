@@ -198,9 +198,7 @@ export const SessionStatus = ({
           <div className="flex flex-col">
             <span className="text-sm text-green-600">Авторизован</span>
             {showUserInfo && user && (
-              <span className="text-xs text-gray-500">
-                {('name' in user ? user.name : user.username) || user.email}
-              </span>
+              <span className="text-xs text-gray-500">{user?.username || user?.email}</span>
             )}
             {showDetails && tokenTimeLeft > 0 && (
               <span className="text-xs text-gray-500">

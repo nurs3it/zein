@@ -33,8 +33,7 @@ export const Sidebar = ({ className }: SidebarProps) => {
     setIsMobileMenuOpen(false);
   };
 
-  const userName =
-    user && 'name' in user && user.name ? user.name : user?.username || 'Пользователь';
+  const userName = user?.username || 'Пользователь';
 
   return (
     <>
@@ -77,7 +76,7 @@ export const Sidebar = ({ className }: SidebarProps) => {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
-                  {userName}
+                  {userName || ''}
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-400">Администратор</p>
               </div>

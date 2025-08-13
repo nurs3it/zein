@@ -1,8 +1,7 @@
-// Re-export User type from entities
-export type { User } from '@/entities/user/model/types';
+import { ApiUser } from './api';
 
 export interface AuthState {
-  user: User | null;
+  user: ApiUser | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
@@ -19,7 +18,7 @@ export interface RegisterCredentials {
   username: string;
 }
 
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
   success: boolean;
   data?: T;
   error?: string;

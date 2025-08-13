@@ -32,8 +32,8 @@ export interface RegisterData {
   name: string;
 }
 
-// API User type (what the server actually returns)
-export interface ApiUser {
+// Raw API User type (what the server actually returns)
+export interface RawApiUser {
   id: number;
   email: string;
   name: string;
@@ -41,10 +41,19 @@ export interface ApiUser {
   is_active: boolean;
 }
 
+// Transformed API User type (for internal use)
+export interface ApiUser {
+  id: string;
+  email: string;
+  username: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface AuthResponse {
   access: string;
   refresh: string;
-  user: ApiUser;
+  user: RawApiUser;
 }
 
 export interface RefreshTokenRequest {

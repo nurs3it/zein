@@ -65,7 +65,7 @@ interface JWTPayload {
   user_id?: string | number;
   email?: string;
   username?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 // Функция для декодирования JWT токена
@@ -85,8 +85,7 @@ export const decodeJWT = (token: string): JWTPayload | null => {
     const decodedPayload = atob(paddedPayload);
 
     return JSON.parse(decodedPayload);
-  } catch (error) {
-    console.error('Error decoding JWT:', error);
+  } catch {
     return null;
   }
 };
@@ -173,14 +172,6 @@ export const getTokenInfoFromCookies = (type: 'access' | 'refresh') => {
 
 // Функция для сохранения токенов
 export const setTokens = (accessToken: string, refreshToken: string) => {
-  // Проверяем валидность токенов перед сохранением
-  const accessTokenInfo = getTokenInfo(accessToken);
-  const refreshTokenInfo = getTokenInfo(refreshToken);
-
-  if (!accessTokenInfo.isValid || !refreshTokenInfo.isValid) {
-    console.warn('Trying to save invalid tokens');
-  }
-
   // Сохраняем токены в cookies
   clientCookies.set(COOKIE_KEYS.ACCESS_TOKEN, accessToken, {
     expires: 1, // 1 день

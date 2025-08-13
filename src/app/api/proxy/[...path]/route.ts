@@ -47,9 +47,6 @@ async function handleRequest(request: NextRequest, params: { path: string[] }, m
     const searchParams = request.nextUrl.searchParams;
     const finalUrl = searchParams.toString() ? `${url}?${searchParams.toString()}` : url;
 
-    // Базовое логирование запросов
-    console.log(`[PROXY] ${method} ${finalUrl}`);
-
     // Подготавливаем заголовки
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
@@ -68,12 +65,11 @@ async function handleRequest(request: NextRequest, params: { path: string[] }, m
       try {
         body = await request.text();
       } catch (error) {
+        // Log error for debugging purposes
+        // eslint-disable-next-line no-console
         console.error(`[PROXY] Error reading request body:`, error);
       }
     }
-
-    // Логирование отправки запроса
-    console.log(`[PROXY] → ${method} ${finalUrl}`);
 
     // Выполняем запрос к бэкенду
     const response = await fetch(finalUrl, {
@@ -84,9 +80,6 @@ async function handleRequest(request: NextRequest, params: { path: string[] }, m
 
     // Получаем ответ от бэкенда
     const responseData = await response.text();
-
-    // Логирование ответа
-    console.log(`[PROXY] ← ${response.status} ${response.statusText}`);
 
     // Возвращаем ответ клиенту
     return new NextResponse(responseData, {
@@ -101,8 +94,6 @@ async function handleRequest(request: NextRequest, params: { path: string[] }, m
       },
     });
   } catch (error) {
-    console.error('[PROXY] Error:', error instanceof Error ? error.message : 'Unknown error');
-
     return NextResponse.json(
       {
         error: 'Proxy error',

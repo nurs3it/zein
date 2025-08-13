@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AuthState, User } from '@/shared/types';
+import { AuthState } from '@/shared/types';
+import { ApiUser } from '@/shared/types/api';
 
 const initialState: AuthState = {
   user: null,
@@ -15,7 +16,7 @@ export const authSlice = createSlice({
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
     },
-    setUser: (state, action: PayloadAction<User>) => {
+    setUser: (state, action: PayloadAction<ApiUser>) => {
       state.user = action.payload;
       state.isAuthenticated = true;
       state.error = null;

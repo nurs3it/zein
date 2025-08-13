@@ -140,9 +140,6 @@ export const ErrorBoundary: React.FC<ErrorBoundaryProps> = ({
   onError,
 }) => {
   const handleError = (error: Error, errorInfo: React.ErrorInfo) => {
-    // Логируем ошибку
-    console.error('Error Boundary caught an error:', error, errorInfo);
-
     // Создаем расширенную ошибку
     const appError: AppError = {
       ...error,

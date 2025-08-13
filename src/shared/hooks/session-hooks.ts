@@ -3,6 +3,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { checkBackendHealth, checkSession } from '@/shared/api/session-api';
 import { refreshToken } from '@/features/auth/api/auth-api';
+import { ApiUser } from '@/shared/types/api';
 import {
   getToken,
   validateTokenFromCookies,
@@ -46,21 +47,18 @@ export const useTokenRefresh = () => {
         throw new Error('No refresh token available');
       }
 
-      console.log('Refreshing token...');
       const response = await refreshToken({ refresh: refreshTokenValue });
       return response;
     },
     onSuccess: data => {
       // Сохраняем новые токены
       setTokens(data.access, data.refresh);
-      console.log('Token refreshed successfully');
 
       // Инвалидируем кеши для обновления состояния
       queryClient.invalidateQueries({ queryKey: SESSION_KEYS.sessionValidation });
       queryClient.invalidateQueries({ queryKey: ['auth', 'currentUser'] });
     },
-    onError: error => {
-      console.error('Token refresh failed:', error);
+    onError: () => {
       // Очищаем токены при ошибке обновления
       clearTokens();
       toast.error('Сессия истекла. Необходимо войти заново.');
@@ -86,7 +84,11 @@ export const useSessionValidation = () => {
     refetchOnWindowFocus: true,
     retry: (failureCount, error) => {
       // Не повторяем запрос при 401 ошибке
-      if (error && 'response' in error && (error as any).response?.status === 401) {
+      if (
+        error &&
+        'response' in error &&
+        (error as { response?: { status?: number } }).response?.status === 401
+      ) {
         return false;
       }
       return failureCount < 2;
@@ -117,24 +119,20 @@ export const useAuthValidation = () => {
     if (
       sessionError &&
       'response' in sessionError &&
-      (sessionError as any).response?.status === 401
+      (sessionError as { response?: { status?: number } }).response?.status === 401
     ) {
       const refreshTokenValue = getToken('refresh');
       const isRefreshTokenValid = refreshTokenValue ? validateTokenFromCookies('refresh') : false;
 
       if (refreshTokenValue && isRefreshTokenValid && !isRefreshingRef.current) {
-        console.log('Session expired, attempting to refresh token...');
-
         isRefreshingRef.current = true;
         setIsRefreshing(true);
 
         tokenRefreshMutation.mutate(undefined, {
           onSuccess: () => {
-            console.log('Token refreshed, retrying session check...');
             refetchSession();
           },
           onError: () => {
-            console.log('Token refresh failed, clearing tokens...');
             clearTokens();
           },
           onSettled: () => {
@@ -143,14 +141,13 @@ export const useAuthValidation = () => {
           },
         });
       } else if (!isRefreshTokenValid && hasRefreshToken) {
-        console.log('Refresh token is invalid, clearing tokens...');
         clearTokens();
       }
     }
   }, [sessionError, tokenRefreshMutation, refetchSession, hasRefreshToken]);
 
   // Извлекаем данные пользователя из токена как fallback
-  const getUserFromToken = useCallback(() => {
+  const getUserFromToken = useCallback((): ApiUser | null => {
     const accessToken = getToken('access');
     if (!accessToken) {
       return null;
@@ -162,11 +159,13 @@ export const useAuthValidation = () => {
     }
 
     return {
-      id: payload.user_id || payload.sub || payload.id,
-      email: payload.email,
-      username: payload.username,
-      name: payload.name || payload.username,
-      ...payload,
+      id: String(payload.user_id || payload.sub || payload.id || ''),
+      email: String(payload.email || ''),
+      username: String(payload.username || payload.name || payload.email || ''),
+      createdAt: payload.iat
+        ? new Date(payload.iat * 1000).toISOString()
+        : new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
   }, []);
 
@@ -179,7 +178,15 @@ export const useAuthValidation = () => {
   const isLoading = sessionLoading || isRefreshing;
 
   // Пользователь из API или из токена
-  const user = sessionData?.user || getUserFromToken();
+  const user: ApiUser | null = sessionData?.user
+    ? {
+        id: String(sessionData.user.id),
+        email: sessionData.user.email,
+        username: sessionData.user.name || sessionData.user.email,
+        createdAt: new Date().toISOString(), // Fallback since session API doesn't provide this
+        updatedAt: new Date().toISOString(),
+      }
+    : getUserFromToken();
 
   // Информация о токене
   const accessTokenInfo = hasAccessToken ? getTokenInfoFromCookies('access') : null;

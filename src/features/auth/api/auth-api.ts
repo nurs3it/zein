@@ -5,8 +5,8 @@ import {
   AuthResponse,
   RefreshTokenRequest,
   RefreshTokenResponse,
+  RawApiUser,
 } from '@/shared/types/api';
-import { ApiUser } from '@/shared/types/api';
 
 // Функция для извлечения сообщения об ошибке
 const getErrorMessage = (error: unknown): string => {
@@ -103,9 +103,9 @@ export const logoutUser = async (): Promise<void> => {
 };
 
 // Получение информации о текущем пользователе
-export const getCurrentUser = async (): Promise<ApiUser> => {
+export const getCurrentUser = async (): Promise<RawApiUser> => {
   try {
-    const response = await apiClient.get<ApiUser>('/users/me/');
+    const response = await apiClient.get<RawApiUser>('/users/me/');
     return response.data;
   } catch (error) {
     const errorMessage = getErrorMessage(error);
