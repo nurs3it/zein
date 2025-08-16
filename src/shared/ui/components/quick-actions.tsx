@@ -9,7 +9,8 @@ interface QuickAction {
   icon: ReactNode;
   onClick: () => void;
   variant?: 'default' | 'outline';
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'lg' | 'default';
+  className?: string;
 }
 
 interface QuickActionsProps {

@@ -7,7 +7,7 @@ interface TableAction {
   icon: ReactNode;
   onClick: () => void;
   variant?: 'ghost' | 'outline' | 'default';
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'lg' | 'default';
   className?: string;
   disabled?: boolean;
   title?: string;
