@@ -15,6 +15,11 @@ import {
   Info,
   Settings,
   Clock,
+  ChevronDown,
+  ChevronUp,
+  User,
+  FileText,
+  Tag,
 } from 'lucide-react';
 import { NotificationList } from '@/entities/notification/model/types';
 
@@ -62,6 +67,19 @@ const getTypeColor = (type: string) => {
   }
 };
 
+const getPriorityColor = (priority?: string) => {
+  switch (priority) {
+    case 'high':
+      return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400';
+    case 'medium':
+      return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400';
+    case 'low':
+      return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400';
+    default:
+      return 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400';
+  }
+};
+
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
   const now = new Date();
@@ -78,8 +96,23 @@ const formatDate = (dateString: string) => {
       day: 'numeric',
       month: 'short',
       year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
     });
   }
+};
+
+const formatFileSize = (bytes?: number) => {
+  if (!bytes) {
+    return '';
+  }
+  if (bytes < 1024) {
+    return `${bytes} Б`;
+  }
+  if (bytes < 1024 * 1024) {
+    return `${(bytes / 1024).toFixed(1)} КБ`;
+  }
+  return `${(bytes / (1024 * 1024)).toFixed(1)} МБ`;
 };
 
 export const NotificationItem = ({
@@ -111,23 +144,24 @@ export const NotificationItem = ({
 
   return (
     <Card
-      className={`p-4 transition-all duration-200 hover:shadow-md ${
+      className={`transition-all duration-200 hover:shadow-md ${
         notification.is_read
           ? 'bg-gray-50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700'
           : 'bg-white dark:bg-gray-800 border-blue-200 dark:border-blue-700'
       }`}
     >
-      <div className="flex items-start gap-3">
-        {/* Иконка типа */}
-        <div className="flex-shrink-0 mt-1">{getTypeIcon(notification.notification_type)}</div>
+      <div className="p-4">
+        {/* Верхняя строка: заголовок, статус, время */}
+        <div className="flex items-start justify-between gap-3 mb-3">
+          <div className="flex items-center gap-3 flex-1 min-w-0">
+            {/* Иконка типа */}
+            <div className="flex-shrink-0 mt-1">{getTypeIcon(notification.notification_type)}</div>
 
-        {/* Основной контент */}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-start justify-between gap-2">
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-2">
+            {/* Заголовок и метаданные */}
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-1">
                 <h4
-                  className={`text-sm font-medium ${
+                  className={`text-base font-semibold truncate ${
                     notification.is_read
                       ? 'text-gray-600 dark:text-gray-400'
                       : 'text-gray-900 dark:text-white'
@@ -135,117 +169,235 @@ export const NotificationItem = ({
                 >
                   {notification.localized_title}
                 </h4>
-                <Badge
-                  variant="outline"
-                  className={`text-xs ${getTypeColor(notification.notification_type)}`}
-                >
-                  {notification.notification_type_display}
-                </Badge>
+
+                {/* Статус "Новое" */}
                 {!notification.is_read && (
-                  <Badge variant="secondary" className="bg-blue-100 text-blue-800 text-xs">
+                  <Badge
+                    variant="secondary"
+                    className="bg-blue-100 text-blue-800 text-xs px-2 py-1"
+                  >
                     Новое
                   </Badge>
                 )}
               </div>
 
-              <p
-                className={`text-sm ${
-                  notification.is_read
-                    ? 'text-gray-500 dark:text-gray-400'
-                    : 'text-gray-700 dark:text-gray-300'
-                } mb-2`}
-              >
-                {notification.localized_message}
-              </p>
+              {/* Приоритет и категория */}
+              <div className="flex items-center gap-2 mb-2">
+                <Badge
+                  variant="outline"
+                  className={`text-xs px-2 py-1 ${getTypeColor(notification.notification_type)}`}
+                >
+                  <Tag className="h-3 w-3 mr-1" />
+                  {notification.notification_type_display}
+                </Badge>
 
-              {/* Метаданные */}
-              <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
-                <div className="flex items-center gap-1">
-                  <Clock className="h-3 w-3" />
-                  {formatDate(notification.created_at)}
-                </div>
-
-                {notification.related_object_type && (
-                  <div className="flex items-center gap-1">
-                    <ExternalLink className="h-3 w-3" />
-                    {notification.related_object_type}
-                  </div>
+                {/* Приоритет (если есть) */}
+                {notification.priority && (
+                  <Badge
+                    variant="outline"
+                    className={`text-xs px-2 py-1 ${getPriorityColor(notification.priority)}`}
+                  >
+                    Приоритет: {notification.priority}
+                  </Badge>
                 )}
               </div>
+            </div>
+          </div>
 
-              {/* Дополнительная информация */}
-              {isExpanded && (
-                <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
-                  <div className="grid grid-cols-2 gap-4 text-xs text-gray-500 dark:text-gray-400">
-                    <div>
-                      <span className="font-medium">ID:</span> {notification.id}
-                    </div>
-                    {notification.file_name && (
-                      <div>
-                        <span className="font-medium">Файл:</span> {notification.file_name}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
+          {/* Время и статус */}
+          <div className="flex flex-col items-end gap-2 flex-shrink-0">
+            <div className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
+              <Clock className="h-4 w-4" />
+              {formatDate(notification.created_at)}
             </div>
 
-            {/* Действия */}
-            <div className="flex items-center gap-1 flex-shrink-0">
-              {!notification.is_read && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleMarkAsRead}
-                  disabled={isMarkingAsRead}
-                  className="h-8 w-8 p-0 text-green-600 hover:text-green-700 hover:bg-green-50 dark:hover:bg-green-900/20"
-                  title="Отметить как прочитанное"
-                >
-                  <Check className="h-4 w-4" />
-                </Button>
-              )}
-
-              {notification.file_path && onDownload && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleDownload}
-                  disabled={isDownloading}
-                  className="h-8 w-8 p-0 text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/20"
-                  title="Скачать файл"
-                >
-                  <Download className="h-4 w-4" />
-                </Button>
-              )}
-
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleDelete}
-                disabled={isDeleting}
-                className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
-                title="Удалить уведомление"
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
+            {/* Статус прочтения */}
+            <div className="flex items-center gap-1 text-xs">
+              <div
+                className={`h-2 w-2 rounded-full ${
+                  notification.is_read ? 'bg-gray-400 dark:bg-gray-500' : 'bg-blue-500'
+                }`}
+              ></div>
+              <span className="text-gray-500 dark:text-gray-400">
+                {notification.is_read ? 'Прочитано' : 'Непрочитано'}
+              </span>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Кнопка расширения */}
-      {(notification.file_name || notification.related_object_type) && (
-        <div className="mt-3 pt-2 border-t border-gray-200 dark:border-gray-700">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+        {/* Сообщение */}
+        <div className="mb-3">
+          <p
+            className={`text-sm leading-relaxed ${
+              notification.is_read
+                ? 'text-gray-500 dark:text-gray-400'
+                : 'text-gray-700 dark:text-gray-300'
+            }`}
           >
-            {isExpanded ? 'Скрыть детали' : 'Показать детали'}
-          </Button>
+            {notification.localized_message}
+          </p>
         </div>
-      )}
+
+        {/* Информационная панель */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3 p-3 bg-gray-50 dark:bg-gray-800/30 rounded-lg">
+          {/* Левая колонка */}
+          <div className="space-y-2">
+            {/* ID уведомления */}
+            <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+              <Tag className="h-3 w-3" />
+              <span>ID: {notification.id}</span>
+            </div>
+
+            {/* Связанный объект */}
+            {notification.related_object_type && (
+              <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                <ExternalLink className="h-3 w-3" />
+                <span>Тип: {notification.related_object_type}</span>
+              </div>
+            )}
+
+            {/* Файл */}
+            {notification.file_name && (
+              <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                <FileText className="h-3 w-3" />
+                <span>Файл: {notification.file_name}</span>
+                {notification.file_size && (
+                  <span className="text-gray-500">({formatFileSize(notification.file_size)})</span>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Правая колонка */}
+          <div className="space-y-2">
+            {/* Отправитель (если есть) */}
+            {notification.sender && (
+              <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                <User className="h-3 w-3" />
+                <span>От: {notification.sender}</span>
+              </div>
+            )}
+
+            {/* Категория */}
+            <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+              <Tag className="h-3 w-3" />
+              <span>Категория: {notification.notification_type_display}</span>
+            </div>
+
+            {/* Дополнительные метаданные */}
+            {notification.metadata && (
+              <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                <Info className="h-3 w-3" />
+                <span>Доп. инфо: {notification.metadata}</span>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Нижняя строка: действия */}
+        <div className="flex items-center justify-between pt-2 border-t border-gray-200 dark:border-gray-700">
+          {/* Левая сторона: кнопка расширения */}
+          <div className="flex items-center gap-2">
+            {(notification.file_name ||
+              notification.related_object_type ||
+              notification.metadata) && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsExpanded(!isExpanded)}
+                className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 h-8 px-2"
+              >
+                {isExpanded ? (
+                  <>
+                    <ChevronUp className="h-3 w-3 mr-1" />
+                    Скрыть детали
+                  </>
+                ) : (
+                  <>
+                    <ChevronDown className="h-3 w-3 mr-1" />
+                    Показать детали
+                  </>
+                )}
+              </Button>
+            )}
+          </div>
+
+          {/* Правая сторона: основные действия */}
+          <div className="flex items-center gap-2">
+            {!notification.is_read && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleMarkAsRead}
+                disabled={isMarkingAsRead}
+                className="text-green-600 hover:text-green-700 hover:bg-green-50 dark:hover:bg-green-900/20 h-8 px-3"
+              >
+                <Check className="h-3 w-3 mr-1" />
+                Прочитано
+              </Button>
+            )}
+
+            {notification.file_path && onDownload && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleDownload}
+                disabled={isDownloading}
+                className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 h-8 px-3"
+              >
+                <Download className="h-3 w-3 mr-1" />
+                Скачать
+              </Button>
+            )}
+
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleDelete}
+              disabled={isDeleting}
+              className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 h-8 px-3"
+            >
+              <Trash2 className="h-3 w-3 mr-1" />
+              Удалить
+            </Button>
+          </div>
+        </div>
+
+        {/* Дополнительная информация (развернутая) */}
+        {isExpanded && (
+          <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-gray-500 dark:text-gray-400">
+              <div className="space-y-2">
+                <h5 className="font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Техническая информация
+                </h5>
+                <div>ID уведомления: {notification.id}</div>
+                {notification.created_at && (
+                  <div>Создано: {new Date(notification.created_at).toISOString()}</div>
+                )}
+                {notification.updated_at && (
+                  <div>Обновлено: {new Date(notification.updated_at).toISOString()}</div>
+                )}
+                {notification.expires_at && (
+                  <div>Истекает: {new Date(notification.expires_at).toISOString()}</div>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <h5 className="font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Файловая информация
+                </h5>
+                {notification.file_path && <div>Путь: {notification.file_path}</div>}
+                {notification.file_name && <div>Имя: {notification.file_name}</div>}
+                {notification.file_size && (
+                  <div>Размер: {formatFileSize(notification.file_size)}</div>
+                )}
+                {notification.file_type && <div>Тип: {notification.file_type}</div>}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </Card>
   );
 };

@@ -7,6 +7,7 @@ import { Button } from '@/shared/ui/base/button';
 import { Badge } from '@/shared/ui/base/badge';
 import { Home, Settings, Menu, X, LogOut, User, BookOpen } from 'lucide-react';
 import { useAuth, useLogout } from '@/features/auth/model/auth-hooks';
+import Image from 'next/image';
 
 const navigation = [
   { name: 'Обзор', href: '/platform', icon: Home },
@@ -62,9 +63,7 @@ export const Sidebar = ({ className }: SidebarProps) => {
           {/* Logo and Header */}
           <div className="flex items-center justify-center h-16 px-6 border-b border-gray-200 dark:border-gray-800">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">Z</span>
-              </div>
+              <Image src="/logo.svg" alt="Zein" width={32} height={32} />
               <span className="text-xl font-bold text-gray-900 dark:text-white">Zein</span>
             </div>
           </div>
