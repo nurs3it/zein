@@ -27,4 +27,10 @@ export { TableActions } from './table-actions';
 export { TableHeader, TableHeaderRow, TableHeaderCell } from './table-header';
 export { TableRow, TableCell } from './table-row';
 export { SearchInput } from './search-input';
-export { SelectField as SelectFieldComponent } from './select-field';
+
+// Компоненты уведомлений
+export { NotificationFiltersComponent } from './notification-filters';
+export { NotificationStats } from './notification-stats';
+export { NotificationItem } from './notification-item';
+export { Pagination } from './pagination';
+export { SelectFieldComponent } from './select-field';

@@ -1,46 +1,47 @@
 'use client';
 
-import { Label } from '@/shared/ui/base/label';
+import { ReactNode } from 'react';
 
 interface SelectOption {
   value: string;
   label: string;
 }
 
-interface SelectFieldProps {
+interface SelectFieldComponentProps {
   id: string;
-  label: string;
   value: string;
-  onChange: (value: string) => void;
-  options: SelectOption[];
+  onValueChange: (value: string) => void;
   placeholder?: string;
   className?: string;
+  children?: ReactNode;
+  options?: SelectOption[];
 }
 
-export function SelectField({
+export function SelectFieldComponent({
   id,
-  label,
   value,
-  onChange,
-  options,
+  onValueChange,
   placeholder,
   className = '',
-}: SelectFieldProps) {
+  children,
+  options,
+}: SelectFieldComponentProps) {
   return (
     <div className={className}>
-      <Label htmlFor={id}>{label}</Label>
       <select
         id={id}
         value={value}
-        onChange={e => onChange(e.target.value)}
-        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        onChange={e => onValueChange(e.target.value)}
+        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white"
       >
         {placeholder && <option value="">{placeholder}</option>}
-        {options.map(option => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
+        {children ||
+          (options &&
+            options.map(option => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            )))}
       </select>
     </div>
   );

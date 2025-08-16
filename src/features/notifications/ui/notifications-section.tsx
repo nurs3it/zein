@@ -45,7 +45,7 @@ export const NotificationsSection = () => {
 
   return (
     <div className="relative">
-      <div className="absolute right-0 top-full mt-2 w-80 rounded-lg border bg-white shadow-lg dark:bg-gray-800">
+      <div className="mt-2 rounded-lg border bg-white shadow-lg dark:bg-gray-800">
         <div className="p-4">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold">Уведомления</h3>
