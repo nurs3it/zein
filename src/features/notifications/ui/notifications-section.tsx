@@ -8,7 +8,7 @@ import {
   useMarkAllAsReadMutation,
   useDeleteNotificationMutation,
 } from '../model/notifications-hooks';
-import { Notification } from '@/entities/notification/model/types';
+import { NotificationList } from '@/entities/notification/model/types';
 
 export const NotificationsSection = () => {
   const { data: notifications, isLoading } = useNotificationsQuery();
@@ -16,17 +16,19 @@ export const NotificationsSection = () => {
   const markAllAsReadMutation = useMarkAllAsReadMutation();
   const deleteNotificationMutation = useDeleteNotificationMutation();
 
-  const unreadCount = (notifications?.results || []).filter((n: Notification) => !n.isRead).length;
+  const unreadCount = (notifications?.results || []).filter(
+    (n: NotificationList) => !n.is_read
+  ).length;
 
-  const handleMarkAsRead = (notificationId: string) => {
-    markAsReadMutation.mutate(notificationId);
+  const handleMarkAsRead = (notificationId: number) => {
+    markAsReadMutation.mutate([notificationId]);
   };
 
   const handleMarkAllAsRead = () => {
     markAllAsReadMutation.mutate();
   };
 
-  const handleDeleteNotification = (notificationId: string) => {
+  const handleDeleteNotification = (notificationId: number) => {
     deleteNotificationMutation.mutate(notificationId);
   };
 
@@ -67,30 +69,30 @@ export const NotificationsSection = () => {
             <div className="text-center py-4 text-gray-500">Нет уведомлений</div>
           ) : (
             <div className="space-y-2 max-h-64 overflow-y-auto">
-              {notifications?.results.map((notification: Notification) => (
+              {notifications?.results.map((notification: NotificationList) => (
                 <div
                   key={notification.id}
                   className={`p-3 rounded-lg border ${
-                    notification.isRead
+                    notification.is_read
                       ? 'bg-gray-50 dark:bg-gray-700'
                       : 'bg-blue-50 dark:bg-blue-900/20'
                   }`}
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex items-start gap-2 flex-1">
-                      {getNotificationIcon(notification.type)}
+                      {getNotificationIcon(notification.notification_type)}
                       <div className="flex-1">
-                        <h4 className="text-sm font-medium">{notification.title}</h4>
+                        <h4 className="text-sm font-medium">{notification.localized_title}</h4>
                         <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                          {notification.message}
+                          {notification.localized_message}
                         </p>
                         <p className="text-xs text-gray-500 mt-1">
-                          {new Date(notification.createdAt).toLocaleDateString()}
+                          {new Date(notification.created_at).toLocaleDateString()}
                         </p>
                       </div>
                     </div>
                     <div className="flex gap-1">
-                      {!notification.isRead && (
+                      {!notification.is_read && (
                         <Button
                           variant="ghost"
                           size="sm"

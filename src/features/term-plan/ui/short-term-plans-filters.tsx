@@ -31,9 +31,8 @@ export function ShortTermPlansFilters({ filters, onFilterChange }: ShortTermPlan
 
         <SelectFieldComponent
           id="status"
-          label="Статус"
           value={filters.status || ''}
-          onChange={value => onFilterChange('status', value)}
+          onValueChange={(value: string) => onFilterChange('status', value)}
           options={statusOptions}
           placeholder="Все статусы"
         />

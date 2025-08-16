@@ -28,12 +28,13 @@ export const useNotificationsWithWebSocket = ({
 
   // Обработчик сообщений от WebSocket
   const handleWebSocketMessage = useCallback(
-    (data: { type?: string; user_id?: string; notification?: NotificationList }) => {
+    (data: unknown) => {
       // Проверяем, что сообщение относится к уведомлениям
-      if (data.type === 'notification' && data.user_id === userId) {
+      const message = data as { type?: string; user_id?: string; notification?: NotificationList };
+      if (message.type === 'notification' && message.user_id === userId) {
         // Добавляем новое уведомление в store
-        if (data.notification) {
-          dispatch(addNotification(data.notification));
+        if (message.notification) {
+          dispatch(addNotification(message.notification));
         }
 
         // Инвалидируем кеш для обновления данных

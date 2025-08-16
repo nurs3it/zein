@@ -109,7 +109,7 @@ export const notificationsSlice = createSlice({
 
     setStats: (state, action: PayloadAction<NotificationStats>) => {
       state.stats = action.payload;
-      state.unreadCount = action.payload.unread;
+      state.unreadCount = action.payload.unread_count;
     },
 
     setError: (state, action: PayloadAction<string>) => {
