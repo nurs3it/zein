@@ -17,7 +17,6 @@ import {
   Clock,
   ChevronDown,
   ChevronUp,
-  User,
   FileText,
   Tag,
 } from 'lucide-react';
@@ -67,19 +66,6 @@ const getTypeColor = (type: string) => {
   }
 };
 
-const getPriorityColor = (priority?: string) => {
-  switch (priority) {
-    case 'high':
-      return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400';
-    case 'medium':
-      return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400';
-    case 'low':
-      return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400';
-    default:
-      return 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400';
-  }
-};
-
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
   const now = new Date();
@@ -100,19 +86,6 @@ const formatDate = (dateString: string) => {
       minute: '2-digit',
     });
   }
-};
-
-const formatFileSize = (bytes?: number) => {
-  if (!bytes) {
-    return '';
-  }
-  if (bytes < 1024) {
-    return `${bytes} Б`;
-  }
-  if (bytes < 1024 * 1024) {
-    return `${(bytes / 1024).toFixed(1)} КБ`;
-  }
-  return `${(bytes / (1024 * 1024)).toFixed(1)} МБ`;
 };
 
 export const NotificationItem = ({
@@ -190,16 +163,6 @@ export const NotificationItem = ({
                   <Tag className="h-3 w-3 mr-1" />
                   {notification.notification_type_display}
                 </Badge>
-
-                {/* Приоритет (если есть) */}
-                {notification.priority && (
-                  <Badge
-                    variant="outline"
-                    className={`text-xs px-2 py-1 ${getPriorityColor(notification.priority)}`}
-                  >
-                    Приоритет: {notification.priority}
-                  </Badge>
-                )}
               </div>
             </div>
           </div>
@@ -261,36 +224,33 @@ export const NotificationItem = ({
               <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
                 <FileText className="h-3 w-3" />
                 <span>Файл: {notification.file_name}</span>
-                {notification.file_size && (
-                  <span className="text-gray-500">({formatFileSize(notification.file_size)})</span>
-                )}
               </div>
             )}
           </div>
 
           {/* Правая колонка */}
           <div className="space-y-2">
-            {/* Отправитель (если есть) */}
-            {notification.sender && (
-              <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
-                <User className="h-3 w-3" />
-                <span>От: {notification.sender}</span>
-              </div>
-            )}
-
             {/* Категория */}
             <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
               <Tag className="h-3 w-3" />
               <span>Категория: {notification.notification_type_display}</span>
             </div>
 
-            {/* Дополнительные метаданные */}
-            {notification.metadata && (
-              <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
-                <Info className="h-3 w-3" />
-                <span>Доп. инфо: {notification.metadata}</span>
-              </div>
-            )}
+            {/* Дата создания */}
+            <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+              <Clock className="h-3 w-3" />
+              <span>Создано: {formatDate(notification.created_at)}</span>
+            </div>
+
+            {/* Статус прочтения */}
+            <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+              <div
+                className={`h-2 w-2 rounded-full ${
+                  notification.is_read ? 'bg-gray-400 dark:bg-gray-500' : 'bg-blue-500'
+                }`}
+              ></div>
+              <span>Статус: {notification.is_read ? 'Прочитано' : 'Непрочитано'}</span>
+            </div>
           </div>
         </div>
 
@@ -298,9 +258,7 @@ export const NotificationItem = ({
         <div className="flex items-center justify-between pt-2 border-t border-gray-200 dark:border-gray-700">
           {/* Левая сторона: кнопка расширения */}
           <div className="flex items-center gap-2">
-            {(notification.file_name ||
-              notification.related_object_type ||
-              notification.metadata) && (
+            {(notification.file_name || notification.related_object_type) && (
               <Button
                 variant="ghost"
                 size="sm"
@@ -355,7 +313,7 @@ export const NotificationItem = ({
               size="sm"
               onClick={handleDelete}
               disabled={isDeleting}
-              className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 h-8 px-3"
+              className="text-red-600 hover:text-red-700 hover:bg-red-900/20 h-8 px-3"
             >
               <Trash2 className="h-3 w-3 mr-1" />
               Удалить
@@ -372,15 +330,9 @@ export const NotificationItem = ({
                   Техническая информация
                 </h5>
                 <div>ID уведомления: {notification.id}</div>
-                {notification.created_at && (
-                  <div>Создано: {new Date(notification.created_at).toISOString()}</div>
-                )}
-                {notification.updated_at && (
-                  <div>Обновлено: {new Date(notification.updated_at).toISOString()}</div>
-                )}
-                {notification.expires_at && (
-                  <div>Истекает: {new Date(notification.expires_at).toISOString()}</div>
-                )}
+                <div>Создано: {new Date(notification.created_at).toISOString()}</div>
+                <div>Тип: {notification.notification_type}</div>
+                <div>Статус: {notification.is_read ? 'Прочитано' : 'Непрочитано'}</div>
               </div>
 
               <div className="space-y-2">
@@ -389,10 +341,9 @@ export const NotificationItem = ({
                 </h5>
                 {notification.file_path && <div>Путь: {notification.file_path}</div>}
                 {notification.file_name && <div>Имя: {notification.file_name}</div>}
-                {notification.file_size && (
-                  <div>Размер: {formatFileSize(notification.file_size)}</div>
+                {notification.related_object_type && (
+                  <div>Связанный объект: {notification.related_object_type}</div>
                 )}
-                {notification.file_type && <div>Тип: {notification.file_type}</div>}
               </div>
             </div>
           </div>
