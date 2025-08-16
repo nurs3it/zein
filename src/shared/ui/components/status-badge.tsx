@@ -1,6 +1,7 @@
 'use client';
 
 import { Badge } from '@/shared/ui/base/badge';
+import { PenTool, Circle } from 'lucide-react';
 
 interface StatusConfig {
   label: string;
@@ -38,8 +39,25 @@ export function StatusBadge({ status, className = '' }: StatusBadgeProps) {
   };
 
   return (
-    <Badge variant="secondary" className={`${config.className} ${className}`}>
-      {config.label}
-    </Badge>
+    <div className="relative">
+      <Badge
+        variant="secondary"
+        className={`${config.className} text-xs sm:text-sm transition-all duration-300 gap-2 ${className}`}
+      >
+        {/* Ненавязчивые анимации с иконками для объяснения состояния */}
+        {status === 'pending' && (
+          <div className="w-3 h-3 text-yellow-600 animate-ping opacity-70">
+            <Circle className="w-3 h-3" />
+          </div>
+        )}
+
+        {status === 'processing' && (
+          <div className="w-3 h-3 text-blue-600 animate-pulse opacity-70">
+            <PenTool className="w-3 h-3" />
+          </div>
+        )}
+        {config.label}
+      </Badge>
+    </div>
   );
 }

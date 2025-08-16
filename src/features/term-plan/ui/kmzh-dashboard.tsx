@@ -30,10 +30,11 @@ export function KMZHDashboard() {
   const createButton = (
     <Button
       onClick={() => router.push('/platform/kmzh/short-term/create')}
-      className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+      className="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
     >
       <Plus className="h-4 w-4 mr-2" />
-      Создать план
+      <span className="hidden sm:inline">Создать план</span>
+      <span className="sm:hidden">Создать</span>
     </Button>
   );
 
@@ -51,7 +52,7 @@ export function KMZHDashboard() {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <PageHeader
         title="КМЖ - Календарно-тематическое планирование"
         description="Система планирования учебного процесса и управления образовательными планами"
@@ -59,7 +60,7 @@ export function KMZHDashboard() {
       />
 
       {/* Основные разделы */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {kmzhSections.map(section => (
           <ActionCard
             key={section.id}

@@ -1,6 +1,6 @@
 'use client';
 
-import { FilterSection, SearchInput, SelectFieldComponent } from '@/shared/ui/components';
+import { FilterSection, InputField, SelectFieldComponent } from '@/shared/ui/components';
 
 const statusOptions = [
   { value: 'pending', label: 'Ожидает' },
@@ -20,8 +20,8 @@ interface ShortTermPlansFiltersProps {
 export function ShortTermPlansFilters({ filters, onFilterChange }: ShortTermPlansFiltersProps) {
   return (
     <FilterSection>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <SearchInput
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+        <InputField
           id="search"
           label="Поиск"
           placeholder="Поиск по теме урока..."

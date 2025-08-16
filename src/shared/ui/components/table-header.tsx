@@ -29,7 +29,7 @@ interface TableHeaderCellProps {
 export function TableHeaderCell({ children, className = '', colSpan }: TableHeaderCellProps) {
   return (
     <th
-      className={`px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider ${className}`}
+      className={`px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 tracking-wider ${className}`}
       colSpan={colSpan}
     >
       {children}

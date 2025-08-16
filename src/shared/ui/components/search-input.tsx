@@ -22,8 +22,10 @@ export function SearchInput({
   className = '',
 }: SearchInputProps) {
   return (
-    <div className={className}>
-      <Label htmlFor={id}>{label}</Label>
+    <div className={`space-y-2 ${className}`}>
+      <Label htmlFor={id} className="text-sm sm:text-base">
+        {label}
+      </Label>
       <div className="relative">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
         <Input

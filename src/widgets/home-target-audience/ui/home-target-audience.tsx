@@ -21,10 +21,12 @@ export const HomeTargetAudience = () => {
             <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center mx-auto mb-6">
               <GraduationCap className="h-8 w-8 text-blue-600 dark:text-blue-400" />
             </div>
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Учителя школ</h3>
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+              Педагоги начального образования
+            </h3>
             <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
               Создавайте увлекательные уроки, интерактивные презентации и авторские материалы для
-              учеников с 1 по 11 класс. ИИ адаптирует контент под возраст и уровень подготовки.
+              учеников. ИИ адаптирует контент под возраст и уровень подготовки.
             </p>
           </div>
 
@@ -33,11 +35,11 @@ export const HomeTargetAudience = () => {
               <BookOpen className="h-8 w-8 text-purple-600 dark:text-purple-400" />
             </div>
             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-              Преподаватели колледжей
+              Преподаватели среднего образования
             </h3>
             <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
               Разрабатывайте профессиональные методички, практические работы и теоретические курсы
-              для подготовки специалистов среднего звена.
+              для подготовки специалистов.
             </p>
           </div>
 
@@ -46,7 +48,7 @@ export const HomeTargetAudience = () => {
               <Sparkles className="h-8 w-8 text-green-600 dark:text-green-400" />
             </div>
             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-              Профессора вузов
+              Преподаватели высшего образования
             </h3>
             <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
               Создавайте научно-методические материалы, лекционные курсы и исследовательские проекты

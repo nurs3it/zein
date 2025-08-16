@@ -37,10 +37,10 @@ export function ShortTermPlansTable({
         <table className="w-full">
           <TableHeader>
             <TableHeaderRow>
-              <TableHeaderCell>Тема урока</TableHeaderCell>
-              <TableHeaderCell>Предмет</TableHeaderCell>
               <TableHeaderCell>Статус</TableHeaderCell>
-              <TableHeaderCell>Создан</TableHeaderCell>
+              <TableHeaderCell className="hidden sm:table-cell">Тема урока</TableHeaderCell>
+              <TableHeaderCell className="hidden sm:table-cell">Предмет</TableHeaderCell>
+              <TableHeaderCell className="hidden sm:table-cell">Создан</TableHeaderCell>
               <TableHeaderCell>Действия</TableHeaderCell>
             </TableHeaderRow>
           </TableHeader>
@@ -51,12 +51,58 @@ export function ShortTermPlansTable({
 
   return (
     <DataTable loading={loading} error={error}>
-      <table className="w-full">
+      {/* Мобильная версия таблицы */}
+      <div className="block sm:hidden space-y-3">
+        {plans.map(plan => (
+          <div
+            key={plan.id}
+            className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-4 space-y-3"
+          >
+            <div className="flex items-start justify-between">
+              <div className="flex-1 min-w-0">
+                <h3 className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                  {plan.lesson_topic}
+                </h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{plan.subject}</p>
+              </div>
+              <StatusBadge status={plan.status} />
+            </div>
+
+            <div className="text-sm text-gray-500 dark:text-gray-400">
+              Создан: {new Date(plan.created_at).toLocaleDateString('ru-RU')}
+            </div>
+
+            <div className="flex gap-2">
+              <button
+                onClick={() => onDelete(plan.id)}
+                disabled={deleteLoading}
+                className="p-2 h-8 w-8 text-red-600 hover:text-red-700 border border-red-200 rounded hover:bg-red-50 disabled:opacity-50"
+                title="Удалить"
+              >
+                <Trash2 className="h-4 w-4" />
+              </button>
+              {plan.result_path && (
+                <button
+                  onClick={() => onDownload(plan.result_path)}
+                  disabled={deleteLoading}
+                  className="p-2 h-8 w-8 text-blue-600 hover:text-blue-700 border border-blue-200 rounded hover:bg-blue-50 disabled:opacity-50"
+                  title="Скачать"
+                >
+                  <Download className="h-4 w-4" />
+                </button>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Десктопная версия таблицы */}
+      <table className="w-full hidden sm:table">
         <TableHeader>
           <TableHeaderRow>
+            <TableHeaderCell>Статус</TableHeaderCell>
             <TableHeaderCell>Тема урока</TableHeaderCell>
             <TableHeaderCell>Предмет</TableHeaderCell>
-            <TableHeaderCell>Статус</TableHeaderCell>
             <TableHeaderCell>Создан</TableHeaderCell>
             <TableHeaderCell>Действия</TableHeaderCell>
           </TableHeaderRow>
@@ -64,6 +110,9 @@ export function ShortTermPlansTable({
         <DataTableBody>
           {plans.map(plan => (
             <TableRow key={plan.id}>
+              <TableCell>
+                <StatusBadge status={plan.status} />
+              </TableCell>
               <TableCell>
                 <div className="text-sm font-medium text-gray-900 dark:text-white">
                   {plan.lesson_topic}
@@ -73,9 +122,6 @@ export function ShortTermPlansTable({
                 <span className="text-sm font-medium text-gray-900 dark:text-white">
                   {plan.subject}
                 </span>
-              </TableCell>
-              <TableCell>
-                <StatusBadge status={plan.status} />
               </TableCell>
               <TableCell>
                 <span className="text-sm text-gray-500 dark:text-gray-400">

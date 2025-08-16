@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { Button } from '@/shared/ui/base/button';
-import { Brain, User, Settings, LogOut, ChevronDown } from 'lucide-react';
+import { User, Settings, LogOut, ChevronDown } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +14,7 @@ import {
 } from '@/shared/ui/base/dropdown-menu';
 import { useAuth } from '@/features/auth/model/auth-hooks';
 import { useLogout } from '@/features/auth/model/auth-hooks';
+import Image from 'next/image';
 
 export const Header = () => {
   const { isAuthenticated, user, isLoading } = useAuth();
@@ -27,9 +28,7 @@ export const Header = () => {
     <header className="border-b bg-white/80 backdrop-blur-sm dark:bg-gray-900/80 sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-            <Brain className="h-5 w-5 text-white" />
-          </div>
+          <Image src="/dark-logo.svg" alt="Zein" width={32} height={32} />
           <span className="font-bold text-xl text-gray-900 dark:text-white">Zein</span>
         </div>
 

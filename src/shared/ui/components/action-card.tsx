@@ -24,27 +24,31 @@ export function ActionCard({
 }: ActionCardProps) {
   return (
     <Card
-      className={`p-6 hover:shadow-lg transition-shadow cursor-pointer group ${className}`}
+      className={`p-4 sm:p-6 hover:shadow-lg transition-shadow cursor-pointer group ${className}`}
       onClick={onClick}
     >
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <div className="flex items-center gap-3 mb-3">
-            <div className={`p-3 bg-${color}-100 dark:bg-${color}-900 rounded-lg`}>
-              <div className={`h-6 w-6 text-${color}-600 dark:text-${color}-400`}>{icon}</div>
+          <div className="flex items-start gap-3 mb-3">
+            <div
+              className={`p-2 sm:p-3 bg-${color}-100 dark:bg-${color}-900 rounded-lg flex-shrink-0`}
+            >
+              <div className={`h-5 w-5 sm:h-6 sm:w-6 text-${color}-600 dark:text-${color}-400`}>
+                {icon}
+              </div>
             </div>
-            <div className="flex-1">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 transition-colors">
+            <div className="flex-1 min-w-0">
+              <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 transition-colors">
                 {title}
               </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">{description}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{description}</p>
             </div>
           </div>
 
           <div className="flex items-center justify-between mt-4">
             <Badge
               variant="secondary"
-              className={`bg-${color}-100 text-${color}-800 hover:bg-${color}-200`}
+              className={`bg-${color}-100 text-${color}-800 hover:bg-${color}-200 text-xs sm:text-sm`}
             >
               Открыть
             </Badge>

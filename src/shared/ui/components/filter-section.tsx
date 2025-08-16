@@ -9,5 +9,5 @@ interface FilterSectionProps {
 }
 
 export function FilterSection({ children, className = '' }: FilterSectionProps) {
-  return <Card className={`p-6 ${className}`}>{children}</Card>;
+  return <Card className={`p-4 sm:p-6 ${className}`}>{children}</Card>;
 }

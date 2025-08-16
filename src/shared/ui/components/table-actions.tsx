@@ -20,7 +20,7 @@ interface TableActionsProps {
 
 export function TableActions({ actions, className = '' }: TableActionsProps) {
   return (
-    <div className={`flex items-center gap-2 ${className}`}>
+    <div className={`flex items-center gap-1 sm:gap-2 ${className}`}>
       {actions.map((action, index) => (
         <Button
           key={index}

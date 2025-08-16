@@ -17,8 +17,10 @@ export function FormSection({
   fullWidth = false,
 }: FormSectionProps) {
   return (
-    <Card className={`p-6 ${fullWidth ? 'lg:col-span-2' : ''} ${className}`}>
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{title}</h3>
+    <Card className={`p-4 sm:p-6 ${fullWidth ? 'lg:col-span-2' : ''} ${className}`}>
+      <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4">
+        {title}
+      </h3>
       {children}
     </Card>
   );

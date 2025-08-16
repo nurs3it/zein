@@ -20,7 +20,7 @@ export function DataTable({
   if (loading) {
     return (
       <Card className={`overflow-hidden ${className}`}>
-        <div className="p-6 text-center text-gray-500">Загрузка...</div>
+        <div className="p-4 sm:p-6 text-center text-gray-500">Загрузка...</div>
       </Card>
     );
   }
@@ -28,14 +28,16 @@ export function DataTable({
   if (error) {
     return (
       <Card className={`overflow-hidden ${className}`}>
-        <div className="p-6 text-center text-red-500">Ошибка: {error}</div>
+        <div className="p-4 sm:p-6 text-center text-red-500">Ошибка: {error}</div>
       </Card>
     );
   }
 
   return (
     <Card className={`overflow-hidden ${className}`}>
-      <div className="overflow-x-auto">{children}</div>
+      <div className="overflow-x-auto -mx-4 sm:mx-0">
+        <div className="min-w-full inline-block align-middle">{children}</div>
+      </div>
     </Card>
   );
 }
@@ -89,7 +91,7 @@ interface DataTableCellProps {
 
 export function DataTableCell({ children, className = '', colSpan }: DataTableCellProps) {
   return (
-    <td className={`px-6 py-4 ${className}`} colSpan={colSpan}>
+    <td className={`px-3 sm:px-6 py-3 sm:py-4 text-sm ${className}`} colSpan={colSpan}>
       {children}
     </td>
   );
@@ -103,7 +105,7 @@ interface DataTableHeaderCellProps {
 export function DataTableHeaderCell({ children, className = '' }: DataTableHeaderCellProps) {
   return (
     <th
-      className={`px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider ${className}`}
+      className={`px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider ${className}`}
     >
       {children}
     </th>

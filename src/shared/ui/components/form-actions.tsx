@@ -23,9 +23,11 @@ export function FormActions({
   className = '',
 }: FormActionsProps) {
   return (
-    <div className={`flex items-center justify-end gap-3 mt-6 ${className}`}>
+    <div
+      className={`flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-3 mt-6 ${className}`}
+    >
       {onCancel && (
-        <Button type="button" variant="outline" onClick={onCancel}>
+        <Button type="button" variant="outline" onClick={onCancel} className="w-full sm:w-auto">
           {cancelIcon}
           {cancelText}
         </Button>
@@ -33,7 +35,7 @@ export function FormActions({
       <Button
         type="submit"
         disabled={isLoading}
-        className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+        className="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
       >
         {submitIcon}
         {isLoading ? 'Сохранение...' : submitText}

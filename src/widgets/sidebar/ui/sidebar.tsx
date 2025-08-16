@@ -4,10 +4,10 @@ import { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { cn } from '@/shared/lib';
 import { Button } from '@/shared/ui/base/button';
-import { Badge } from '@/shared/ui/base/badge';
 import { Home, Settings, Menu, X, LogOut, User, BookOpen } from 'lucide-react';
 import { useAuth, useLogout } from '@/features/auth/model/auth-hooks';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const navigation = [
   { name: 'Обзор', href: '/platform', icon: Home },
@@ -61,12 +61,15 @@ export const Sidebar = ({ className }: SidebarProps) => {
       >
         <div className="flex h-full flex-col">
           {/* Logo and Header */}
-          <div className="flex items-center justify-center h-16 px-6 border-b border-gray-200 dark:border-gray-800">
+          <Link
+            href="/platform"
+            className="flex items-center justify-start h-16 px-6 border-b border-gray-200 dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-gray-800"
+          >
             <div className="flex items-center gap-2">
-              <Image src="/logo.svg" alt="Zein" width={32} height={32} />
+              <Image src="/dark-logo.svg" alt="Zein" width={32} height={32} />
               <span className="text-xl font-bold text-gray-900 dark:text-white">Zein</span>
             </div>
-          </div>
+          </Link>
 
           {/* User Info */}
           <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-800">
@@ -78,7 +81,7 @@ export const Sidebar = ({ className }: SidebarProps) => {
                 <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
                   {userName || ''}
                 </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">Администратор</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Пользователь</p>
               </div>
             </div>
           </div>
@@ -103,11 +106,6 @@ export const Sidebar = ({ className }: SidebarProps) => {
                 >
                   <Icon className="h-4 w-4" />
                   <span className="text-sm font-medium">{item.name}</span>
-                  {item.name === 'Уведомления' && (
-                    <Badge variant="secondary" className="ml-auto bg-red-100 text-red-800 text-xs">
-                      3
-                    </Badge>
-                  )}
                 </Button>
               );
             })}

@@ -48,7 +48,7 @@ export default function ShortTermPlansPage() {
   const createButton = (
     <Button
       onClick={handleCreate}
-      className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+      className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 sm:w-auto"
     >
       <Plus className="h-4 w-4 mr-2" />
       Создать план

@@ -44,7 +44,7 @@ export const HomeHero = () => {
               </span>
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
-              Zein — это платформа для школ, колледжей и университетов, которая помогает учителям
+              Zein — это платформа для образовательных учреждений, которая помогает педагогам
               создавать авторские работы, презентации и методички за минуты, а не часы.
               Искусственный интеллект берет рутину на себя.
             </p>
@@ -91,15 +91,15 @@ export const HomeHero = () => {
             // Персональная статистика для авторизованных пользователей
             <>
               <div className="text-center">
-                <div className="text-3xl font-bold text-gray-900 dark:text-white">12</div>
+                <div className="text-3xl font-bold text-gray-900 dark:text-white">0</div>
                 <div className="text-gray-600 dark:text-gray-400">Ваших проектов</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-gray-900 dark:text-white">48ч</div>
+                <div className="text-3xl font-bold text-gray-900 dark:text-white">0ч</div>
                 <div className="text-gray-600 dark:text-gray-400">Времени сэкономлено</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-gray-900 dark:text-white">97%</div>
+                <div className="text-3xl font-bold text-gray-900 dark:text-white">—</div>
                 <div className="text-gray-600 dark:text-gray-400">Эффективность работы</div>
               </div>
             </>
@@ -107,15 +107,15 @@ export const HomeHero = () => {
             // Общая статистика для неавторизованных пользователей
             <>
               <div className="text-center">
-                <div className="text-3xl font-bold text-gray-900 dark:text-white">5000+</div>
+                <div className="text-3xl font-bold text-gray-900 dark:text-white">—</div>
                 <div className="text-gray-600 dark:text-gray-400">Учителей используют</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-gray-900 dark:text-white">2 мин</div>
+                <div className="text-3xl font-bold text-gray-900 dark:text-white">—</div>
                 <div className="text-gray-600 dark:text-gray-400">Создание презентации</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-gray-900 dark:text-white">300+</div>
+                <div className="text-3xl font-bold text-gray-900 dark:text-white">—</div>
                 <div className="text-gray-600 dark:text-gray-400">Образовательных учреждений</div>
               </div>
             </>

@@ -3,7 +3,7 @@
 import { Button } from '@/shared/ui/base/button';
 import { Badge } from '@/shared/ui/base/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/base/card';
-import { User, Bell, Settings, List, Clock } from 'lucide-react';
+import { User, Bell, Settings, List, Clock, Inbox } from 'lucide-react';
 import { useAuth } from '@/features/auth/model/auth-hooks';
 import Link from 'next/link';
 
@@ -13,17 +13,10 @@ export const PlatformDashboard = () => {
   const userName = user?.name || 'Пользователь';
 
   const quickStats = [
-    { label: 'Активных проектов', value: '12', trend: '+3' },
-    { label: 'Выполненных задач', value: '156', trend: '+24' },
-    { label: 'Новых уведомлений', value: '8', trend: '+2' },
-    { label: 'Время онлайн', value: '4.2ч', trend: '+0.5ч' },
-  ];
-
-  const recentActivity = [
-    { action: 'Создан новый проект', time: '2 минуты назад', type: 'project' },
-    { action: 'Обновлен профиль', time: '1 час назад', type: 'profile' },
-    { action: 'Добавлен новый пользователь', time: '3 часа назад', type: 'user' },
-    { action: 'Настроены уведомления', time: '5 часов назад', type: 'settings' },
+    { label: 'Активных проектов', value: '0', trend: '—' },
+    { label: 'Выполненных задач', value: '0', trend: '—' },
+    { label: 'Новых уведомлений', value: '0', trend: '—' },
+    { label: 'Время онлайн', value: '0ч', trend: '—' },
   ];
 
   return (
@@ -34,11 +27,11 @@ export const PlatformDashboard = () => {
             <div>
               <h1 className="text-2xl font-bold mb-2">Добро пожаловать, {userName || ''}!</h1>
               <p className="text-blue-100 mb-4">
-                Вот краткий обзор вашей активности и последних обновлений
+                Ваша платформа готова к работе. Начните создавать проекты и задачи.
               </p>
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4" />
-                <span className="text-sm">Последний вход: сегодня, 14:30</span>
+                <span className="text-sm">Последний вход: сегодня</span>
               </div>
             </div>
             <div className="hidden md:block">
@@ -58,7 +51,7 @@ export const PlatformDashboard = () => {
                     <p className="text-sm text-gray-600 dark:text-gray-400">{stat.label}</p>
                     <p className="text-2xl font-bold text-gray-900 dark:text-white">{stat.value}</p>
                   </div>
-                  <Badge variant="secondary" className="bg-green-100 text-green-800">
+                  <Badge variant="secondary" className="bg-gray-100 text-gray-600">
                     {stat.trend}
                   </Badge>
                 </div>
@@ -77,21 +70,17 @@ export const PlatformDashboard = () => {
               <CardDescription>Ваши недавние действия в системе</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {recentActivity.map((activity, index) => (
-                  <div
-                    key={index}
-                    className="flex items-start gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"
-                  >
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2" />
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">
-                        {activity.action}
-                      </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{activity.time}</p>
-                    </div>
-                  </div>
-                ))}
+              <div className="text-center py-12">
+                <Inbox className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                  Пока нет активности
+                </h3>
+                <p className="text-gray-500 dark:text-gray-400 mb-4">
+                  Начните работать с платформой, и здесь появятся ваши действия
+                </p>
+                <Button variant="outline" asChild>
+                  <Link href="/platform/kmzh">Создать первый проект</Link>
+                </Button>
               </div>
             </CardContent>
           </Card>
@@ -115,6 +104,12 @@ export const PlatformDashboard = () => {
                 <Link href="/platform/notifications">
                   <Bell className="h-4 w-4" />
                   Проверить уведомления
+                </Link>
+              </Button>
+              <Button variant="outline" className="w-full justify-start gap-3" asChild>
+                <Link href="/platform/kmzh">
+                  <List className="h-4 w-4" />
+                  Создать проект
                 </Link>
               </Button>
             </CardContent>

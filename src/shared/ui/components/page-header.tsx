@@ -23,7 +23,9 @@ export function PageHeader({
   icon,
 }: PageHeaderProps) {
   return (
-    <div className={`flex items-center justify-between py-4 ${className}`}>
+    <div
+      className={`flex flex-col sm:flex-row items-start sm:items-center justify-between py-4 gap-4 sm:gap-0 ${className}`}
+    >
       <div className="flex items-center gap-3">
         {showBackButton && (
           <Button variant="ghost" size="sm" onClick={onBack} className="p-2">
@@ -32,11 +34,15 @@ export function PageHeader({
         )}
         {icon && <div className="text-gray-600 dark:text-gray-400">{icon}</div>}
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{title}</h1>
-          {description && <p className="text-gray-600 dark:text-gray-400 mt-2">{description}</p>}
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">{title}</h1>
+          {description && (
+            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1 sm:mt-2">
+              {description}
+            </p>
+          )}
         </div>
       </div>
-      {actions && <div className="flex items-center gap-3">{actions}</div>}
+      {actions && <div className="flex items-center gap-3 w-full sm:w-auto">{actions}</div>}
     </div>
   );
 }

@@ -3,11 +3,11 @@ import {
   CheckCircle,
   FileText,
   BookOpen,
-  Brain,
   GraduationCap,
   Gamepad2,
   Presentation,
 } from 'lucide-react';
+import Image from 'next/image';
 
 export const HomeFeatures = () => {
   return (
@@ -38,15 +38,15 @@ export const HomeFeatures = () => {
               <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
                 <li className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-green-500" />
-                  Планы уроков
+                  Учебные материалы
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-green-500" />
-                  Рабочие программы
+                  Программы обучения
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-green-500" />
-                  Контрольные работы
+                  Оценочные материалы
                 </li>
               </ul>
             </CardContent>
@@ -107,7 +107,7 @@ export const HomeFeatures = () => {
           <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
             <CardHeader>
               <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/20 rounded-lg flex items-center justify-center mb-4">
-                <Brain className="h-6 w-6 text-orange-600 dark:text-orange-400" />
+                <Image src="/dark-logo.svg" alt="Zein" width={32} height={32} />
               </div>
               <CardTitle>ИИ-Ассистент</CardTitle>
               <CardDescription>Персональный помощник для каждого педагога</CardDescription>
@@ -116,7 +116,7 @@ export const HomeFeatures = () => {
               <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
                 <li className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-green-500" />
-                  24/7 поддержка
+                  Круглосуточная поддержка
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-green-500" />
@@ -142,15 +142,15 @@ export const HomeFeatures = () => {
               <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
                 <li className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-green-500" />
-                  Школы
+                  Дошкольное образование
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-green-500" />
-                  Колледжи
+                  Среднее образование
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-green-500" />
-                  Университеты
+                  Высшее образование
                 </li>
               </ul>
             </CardContent>
@@ -161,8 +161,8 @@ export const HomeFeatures = () => {
               <div className="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/20 rounded-lg flex items-center justify-center mb-4">
                 <Gamepad2 className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
               </div>
-              <CardTitle>Скоро для студентов</CardTitle>
-              <CardDescription>Интерактивные игры и обучающие инструменты</CardDescription>
+              <CardTitle>Интерактивные инструменты</CardTitle>
+              <CardDescription>Обучающие игры и интерактивные материалы</CardDescription>
             </CardHeader>
             <CardContent>
               <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
@@ -172,7 +172,7 @@ export const HomeFeatures = () => {
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-green-500" />
-                  ИИ-репетитор
+                  Интерактивные уроки
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-green-500" />

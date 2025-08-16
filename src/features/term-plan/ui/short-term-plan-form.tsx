@@ -138,10 +138,10 @@ export function ShortTermPlanForm({ onCancel }: ShortTermPlanFormProps) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Основная информация */}
         <FormSection title="Основная информация">
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             <InputField
               id="lesson_topic"
               label="Тема урока"
@@ -162,7 +162,7 @@ export function ShortTermPlanForm({ onCancel }: ShortTermPlanFormProps) {
               required
             />
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <InputField
                 id="class_number"
                 label="Класс"
@@ -188,7 +188,7 @@ export function ShortTermPlanForm({ onCancel }: ShortTermPlanFormProps) {
 
         {/* Предмет и направление */}
         <FormSection title="Предмет и направление">
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             <InputField
               id="subject"
               label="Предмет"
@@ -205,12 +205,12 @@ export function ShortTermPlanForm({ onCancel }: ShortTermPlanFormProps) {
         <FormSection title="Цели обучения" fullWidth>
           <div className="space-y-3">
             {formData.learning_objectives?.map((objective, index) => (
-              <div key={index} className="flex gap-2">
+              <div key={index} className="flex flex-col sm:flex-row gap-2">
                 <Input
                   value={objective}
                   onChange={e => handleLearningObjectiveChange(index, e.target.value)}
                   placeholder={`Цель обучения ${index + 1}`}
-                  className={errors[`learning_objective_${index}`] ? 'border-red-500' : ''}
+                  className={`flex-1 ${errors[`learning_objective_${index}`] ? 'border-red-500' : ''}`}
                 />
                 {formData.learning_objectives && formData.learning_objectives.length > 1 && (
                   <Button
@@ -218,7 +218,7 @@ export function ShortTermPlanForm({ onCancel }: ShortTermPlanFormProps) {
                     variant="outline"
                     size="sm"
                     onClick={() => removeLearningObjective(index)}
-                    className="px-3"
+                    className="px-3 w-full sm:w-auto"
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
@@ -240,7 +240,7 @@ export function ShortTermPlanForm({ onCancel }: ShortTermPlanFormProps) {
 
         {/* Дополнительная информация */}
         <FormSection title="Дополнительная информация" fullWidth>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
             <TextareaField
               id="theory"
               label="Теория"

@@ -2,6 +2,7 @@
 
 import { Brain, Sparkles, Zap, BookOpen } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 interface LoadingScreenProps {
   message?: string;
@@ -85,7 +86,7 @@ export const LoadingScreen = ({ message = 'Загрузка...', className = '' 
 
             {/* Main logo container */}
             <div className="relative w-20 h-20 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center shadow-xl float">
-              <Brain className="h-10 w-10 text-white animate-pulse" />
+              <Image src="/dark-logo.svg" alt="Zein" width={80} height={80} />
             </div>
 
             {/* Rotating icon */}

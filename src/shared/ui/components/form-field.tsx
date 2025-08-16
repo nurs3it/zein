@@ -48,8 +48,8 @@ export function InputField({
   max,
 }: InputFieldProps) {
   return (
-    <div className={className}>
-      <Label htmlFor={id}>
+    <div className={`space-y-2 ${className}`}>
+      <Label htmlFor={id} className="text-sm sm:text-base">
         {label} {required && <span className="text-red-500">*</span>}
       </Label>
       <Input
@@ -62,7 +62,7 @@ export function InputField({
         min={min}
         max={max}
       />
-      {error && <p className="text-sm text-red-500 mt-1">{error}</p>}
+      {error && <p className="text-xs sm:text-sm text-red-500">{error}</p>}
     </div>
   );
 }
@@ -79,8 +79,8 @@ export function TextareaField({
   rows = 3,
 }: TextareaFieldProps) {
   return (
-    <div className={className}>
-      <Label htmlFor={id}>
+    <div className={`space-y-2 ${className}`}>
+      <Label htmlFor={id} className="text-sm sm:text-base">
         {label} {required && <span className="text-red-500">*</span>}
       </Label>
       <Textarea
@@ -91,7 +91,7 @@ export function TextareaField({
         rows={rows}
         className={error ? 'border-red-500' : ''}
       />
-      {error && <p className="text-sm text-red-500 mt-1">{error}</p>}
+      {error && <p className="text-xs sm:text-sm text-red-500">{error}</p>}
     </div>
   );
 }
@@ -107,15 +107,15 @@ export function SelectField({
   className = '',
 }: SelectFieldProps) {
   return (
-    <div className={className}>
-      <Label htmlFor={id}>
+    <div className={`space-y-2 ${className}`}>
+      <Label htmlFor={id} className="text-sm sm:text-base">
         {label} {required && <span className="text-red-500">*</span>}
       </Label>
       <select
         id={id}
         value={value}
         onChange={e => onChange(e.target.value)}
-        className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${error ? 'border-red-500' : ''}`}
+        className={`w-full px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${error ? 'border-red-500' : ''}`}
       >
         {options.map(option => (
           <option key={option.value} value={option.value}>
@@ -123,7 +123,7 @@ export function SelectField({
           </option>
         ))}
       </select>
-      {error && <p className="text-sm text-red-500 mt-1">{error}</p>}
+      {error && <p className="text-xs sm:text-sm text-red-500">{error}</p>}
     </div>
   );
 }
