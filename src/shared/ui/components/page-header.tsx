@@ -24,9 +24,9 @@ export function PageHeader({
 }: PageHeaderProps) {
   return (
     <div
-      className={`flex flex-col sm:flex-row items-start sm:items-center justify-between py-4 gap-4 sm:gap-0 ${className}`}
+      className={`flex flex-col sm:flex-row items-start sm:items-start justify-between py-4 pb-0 gap-4 sm:gap-0 ${className}`}
     >
-      <div className="flex items-center gap-3">
+      <div className="flex items-start gap-3">
         {showBackButton && (
           <Button variant="ghost" size="sm" onClick={onBack} className="p-2">
             <ChevronLeft className="h-4 w-4" />

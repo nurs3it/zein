@@ -52,7 +52,7 @@ export function ShortTermPlansTable({
   return (
     <DataTable loading={loading} error={error}>
       {/* Мобильная версия таблицы */}
-      <div className="block sm:hidden space-y-3">
+      <div className="block sm:hidden space-y-3 px-6">
         {plans.map(plan => (
           <div
             key={plan.id}
